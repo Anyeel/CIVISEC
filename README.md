@@ -59,7 +59,7 @@ Boton de desarrollo permite lanzar notificaciones o que avance la historia
 Hardware:
 - Vibración
 - Linterna
-- **GPS**
+- **GPS** : Api: en google maps platform, además tenemos un repo para saber como hacer el mapa. SDK google maps
 - **Bluethoot**
 - WiFi
 - Acelerómetro
