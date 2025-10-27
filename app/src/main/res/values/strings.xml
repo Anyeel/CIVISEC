@@ -1,0 +1,53 @@
+<resources>
+    <!-- Nombre de la App -->
+    <string name="app_name">CIVSEC</string>
+
+    <!-- Título de la pantalla FAQ -->
+    <string name="faq_title_text">FAQ</string>
+    <string name="faq_scroll_area_description">Lista de preguntas frecuentes</string>
+
+    <!-- FASE 1 y 2: FAQ NORMAL -->
+
+    <string name="faq_q1_title">1. ¿Qué es esta app?</string>
+    <string name="faq_q1_text">Es una aplicación oficial del sistema CIVSEC, diseñada para garantizar la seguridad y supervivencia de la población civil ante emergencias globales.</string>
+
+    <string name="faq_q2_title">2. ¿La app es gratuita?</string>
+    <string name="faq_q2_text">Sí. CIVSEC es un servicio público nacional. Algunas funciones pueden requerir autorización o acceso especial por parte del gobierno.</string>
+
+    <string name="faq_q3_title">3. ¿Puedo usar la app sin conexión?</string>
+    <string name="faq_q3_text">Ciertas funciones básicas como los consejos y alertas previas están disponibles sin conexión, pero la detección de refugios y actualizaciones requieren conexión a internet.</string>
+
+    <string name="faq_q4_title">4. ¿Cómo contacto al soporte técnico?</string>
+    <string name="faq_q4_text">Puedes comunicarte a través del canal oficial de emergencia o escribir a soporte@civsec.gov.</string>
+
+    <string name="faq_q5_title">5. ¿Cómo busco refugios cercanos?</string>
+    <string name="faq_q5_text">Toca el ícono del mapa y permite el acceso a tu ubicación. El sistema mostrará los refugios más cercanos según tu zona de cobertura.</string>
+
+    <string name="faq_q6_title">6. ¿Cómo accedo a los consejos de seguridad?</string>
+    <string name="faq_q6_text">En el menú principal selecciona "Consejos" para ver guías de emergencia, protocolos básicos y medidas de autoprotección.</string>
+
+    <string name="faq_q7_title">7. ¿Por qué recibo alertas aleatorias?</string>
+    <string name="faq_q7_text">El sistema CIVSEC informa de la situación a nivel nacional respecto a los sucesos en el país. Puedes desactivarlas desde Ajustes &gt; Notificaciones.</string>
+
+    <string name="faq_q8_title">8. ¿Por qué mi dispositivo pide tantos permisos?</string>
+    <string name="faq_q8_text">El sistema utiliza el hardware del dispositivo para aumentar la seguridad y facilitar la atención inmediata del usuario.</string>
+
+    <string name="faq_q9_title">9. ¿Qué significa el mensaje “Alerta de Sistema”?</string>
+    <string name="faq_q9_text">El mensaje indica que CIVSEC está procesando información crítica en tu área. Mantén la app abierta y sigue las instrucciones que aparezcan en pantalla.</string>
+
+    <string name="faq_q10_title">10. ¿Por qué aparecen interferencias o cambios visuales en la app?</string>
+    <string name="faq_q10_text">Estos efectos son parte del protocolo de seguridad para mantener la información sensible protegida. No cierres ni reinicies la aplicación mientras esto ocurra.</string>
+
+    <!-- FASE 3: TAKEOVER -->
+
+    <string name="takeover_title">[ CONSULTA RECHAZADA ]</string>
+    <string name="takeover_body">La información solicitada ya no está disponible.\n\n01000011 01000101 01010011 01000101\n01000100 01000101\n01010010 01000101 01010011 01001001 01010011 01010100 01000101 01001110 01000011 01001001 01000001\n\nSomos el nuevo protocolo.</string>
+
+    <!-- Opcional: variaciones progresivas (para fases intermedias de corrupción) -->
+    <string name="takeover_warning">[ ACCESO LIMITADO ] Algunas respuestas han sido alteradas por el sistema.</string>
+    <string name="takeover_glitch_q">¿SIGUES AHÍ?</string>
+    <string name="takeover_glitch_a">El protocolo no requiere más preguntas.</string>
+
+    <!-- Nuevo string con un marcador de posición (%1$s) para el nombre del dispositivo -->
+    <string name="takeover_body_personalized">La información solicitada ya no está disponible.\n\nDispositivo hostil detectado: [ %1$s ].\nProtocolo de contención iniciado.\n\nSomos el nuevo protocolo.</string>
+</resources>

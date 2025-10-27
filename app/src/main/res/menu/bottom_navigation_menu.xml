@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_alerts"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_alerts"
+        android:title="Menú" />
+
+    <item
+        android:id="@+id/nav_map"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_map"
+        android:title="Mapa"/>
+
+    <item
+        android:id="@+id/nav_tips"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_tips"
+        android:title="Consejos"/>
+
+    <item
+        android:id="@+id/nav_faq"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_faq"
+        android:title="FAQ"/>
+
+</menu>
