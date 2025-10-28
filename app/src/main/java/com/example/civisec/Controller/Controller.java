@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.os.Build;
+import android.widget.Toast;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -16,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.civisec.R;
 import com.example.civisec.View.MainActivity;
@@ -31,10 +36,10 @@ public class Controller {
     public static final String PREFS_NAME = "CIVISEC_PREFS";
     public static final String KEY_CURRENT_PHASE = "CURRENT_PHASE";
     public static final String KEY_BT_DEVICE_NAME = "BT_DEVICE_NAME"; // Constante para bluetooth
-
-    public static final String KEY_SAVED_ALERTS = "SAVED_ALERTS"; // Para la lista de alertas
+    public static final String KEY_TRIGGERED_NEWS = "TRIGGERED_NEWS"; // Almacenará los IDs de las noticias
     private static final String CHANNEL_ID = "CIVISEC_ALERTS";
     private static final String CHANNEL_NAME = "CIVISEC System Alerts";
+    public static final String KEY_SAVED_ALERTS = "SAVED_ALERTS"; // Para la lista de alertas
     private static final String CHANNEL_DESC = "Notifications for critical CIVISEC alerts";
     public void setupBottomNavigation(Activity activity, int currentItemId) {
         BottomNavigationView bottomNavigationView = activity.findViewById(R.id.bottom_navigation);
@@ -80,17 +85,16 @@ public class Controller {
 
     }
 
+
     public void saveCurrentPhase(Context context, int phase) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(KEY_CURRENT_PHASE, phase);
-        editor.apply(); // apply() guarda los datos en segundo plano.
+        editor.apply();
     }
 
     public int getCurrentPhase(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        // El segundo parámetro de getInt es el valor por defecto que se devuelve
-        // si la clave no existe. Empezamos en la fase 1.
         return prefs.getInt(KEY_CURRENT_PHASE, 1);
     }
 
@@ -133,8 +137,52 @@ public class Controller {
         sendNotification(context, "ALERTA DE SEGURIDAD CIVISEC", alertMessage);
     }
 
+    private void saveTriggeredNews(Context context, int titleResId, int textResId) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Set<String> triggeredNews = new HashSet<>(prefs.getStringSet(KEY_TRIGGERED_NEWS, new HashSet<>()));
+        // Guardamos los IDs combinados como un único string.
+        triggeredNews.add(titleResId + "|" + textResId);
+        prefs.edit().putStringSet(KEY_TRIGGERED_NEWS, triggeredNews).apply();
+    }
+
+    public Set<String> getTriggeredNews(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getStringSet(KEY_TRIGGERED_NEWS, new HashSet<>());
+    }
+
+    public void triggerNewsAlert(Context context, int titleResId, int textResId) {
+        saveTriggeredNews(context, titleResId, textResId);
+        sendNotification(context, context.getString(titleResId), context.getString(textResId));
+    }
+    public void advanceToPhase(Context context, int newPhase) {
+        if (newPhase <= getCurrentPhase(context)) {
+            Log.d("Controller", "Intento de avanzar a la fase " + newPhase + ", pero ya estamos en la fase " + getCurrentPhase(context) + " o una superior.");
+            return;
+        }
+
+        Log.d("Controller", "Avanzando a la fase " + newPhase);
+        saveCurrentPhase(context, newPhase);
+
+        String notificationTitle = "";
+        String notificationText = "";
+
+        switch (newPhase) {
+            case 2:
+                notificationTitle = "ALERTA DE SEGURIDAD NIVEL 2";
+                notificationText = context.getString(R.string.phase2_alert2_title);
+                break;
+            case 3:
+                notificationTitle = "DIRECTIVA DE RED OBLIGATORIA";
+                notificationText = context.getString(R.string.phase3_alert1_title);
+                break;
+        }
+
+        if (!notificationTitle.isEmpty() && !notificationText.isEmpty()) {
+            sendNotification(context, notificationTitle, notificationText);
+        }
+    }
+
     private void sendNotification(Context context, String title, String message) {
-        // Crear el canal de notificación (necesario para Android 8.0 Oreo y superior)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription(CHANNEL_DESC);
@@ -142,23 +190,22 @@ public class Controller {
             manager.createNotificationChannel(channel);
         }
 
-        // Crear un Intent para que al pulsar la notificación se abra MainActivity
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_IMMUTABLE);
 
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_civisec_logo) // Asegúrate de tener un icono en drawable
+                .setSmallIcon(R.drawable.ic_civisec_logo)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message)) // Para texto largo
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent) // Acción al pulsar
-                .setAutoCancel(true); // La notificación desaparece al pulsarla
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-        // El ID de la notificación (101) puede ser cualquier número.
-        // Si usas el mismo ID, las notificaciones se reemplazarán. Si usas IDs diferentes, se apilarán.
-        managerCompat.notify(101, builder.build());
+
+        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            managerCompat.notify(101, builder.build());
+        }
     }
 }

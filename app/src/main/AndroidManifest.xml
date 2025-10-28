@@ -2,7 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Permisos de Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+
+    <!-- Permiso para Notificaciones (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- Permisos para el AlarmManager -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,39 +23,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CIVISEC">
-        <activity
-            android:name=".View.FaqActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.TipsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.MapActivity"
-            android:exported="false" />
-        <activity
-            android:name=".View.MainActivity"
-            android:exported="false" />
+        android:theme="@style/Theme.CIVISEC"
+        tools:targetApi="31">
+
+        <!-- Declaración de tus Activities -->
         <activity
             android:name=".View.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".View.MainActivity" />
+        <activity android:name=".View.MapActivity" />
+        <activity android:name=".View.TipsActivity" />
+        <activity android:name=".View.FaqActivity" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="TU_API_KEY_AQUI" />
+        <!-- Declaración del BroadcastReceiver -->
+        <receiver
+            android:name=".Controller.AlertReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+
     </application>
 
-    <!-- Permiso necesario para Android 12 y superior para conectar a dispositivos ya emparejados -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-
-    <!-- Permisos para versiones anteriores de Android (se ignoran en Android 12+) -->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="TU_API_KEY_AQUI" />
 </manifest>

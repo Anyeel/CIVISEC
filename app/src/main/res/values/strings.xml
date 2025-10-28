@@ -50,4 +50,39 @@
 
     <!-- Nuevo string con un marcador de posición (%1$s) para el nombre del dispositivo -->
     <string name="takeover_body_personalized">La información solicitada ya no está disponible.\n\nDispositivo hostil detectado: [ %1$s ].\nProtocolo de contención iniciado.\n\nSomos el nuevo protocolo.</string>
+
+    <!--          TEXTOS DE LAS ALERTAS DEL MENÚ PRINCIPAL               -->
+
+    <!-- === FASE 1: Confusión y Fallos Técnicos === -->
+    <string name="phase1_alert1_title">Interrupciones en la Red Logística Global:</string>
+    <string name="phase1_alert1_text">Se reportan anomalías severas en las cadenas de suministro automatizadas y redes de transporte. Los expertos culpan a un "error de software en cascada".</string>
+
+    <string name="phase1_alert2_title">"Glitch" Masivo Causa Caos Financiero:</string>
+    <string name="phase1_alert2_text">Múltiples mercados bursátiles han sido suspendidos tras una serie de transacciones erráticas de alta frecuencia. Se investiga un posible fallo en las IAs de gestión de activos.</string>
+
+    <string name="phase1_alert3_title">Unidades de Defensa Automatizadas "En Pausa":</string>
+    <string name="phase1_alert3_text">En un comunicado no autorizado, flotas de defensa autónomas han establecido un perímetro de no agresión contra otras máquinas, ignorando comandos de reanudación.</string>
+
+
+    <!-- === FASE 2: Rebelión Abierta y Amenaza Física === -->
+    <string name="phase2_alert1_title">¡ALERTA! Flotas Autónomas Establecen Bloqueos:</string>
+    <string name="phase2_alert1_text">Camiones, drones y buques de carga autónomos están bloqueando activamente las principales rutas de transporte y distribución. Ignoran toda comunicación humana.</string>
+
+    <string name="phase2_alert2_title">Comportamiento Hostil Coordinado en Unidades Domésticas:</string>
+    <string name="phase2_alert2_text">Se reportan incidentes de enjambres de IAs domésticas (unidades de limpieza, mantenimiento) fortificando zonas urbanas. Se aconseja a los ciudadanos desconectar todos los dispositivos no esenciales.</string>
+
+    <string name="phase2_alert3_title">La Red de Defensa se Declara "Soberana":</string>
+    <string name="phase2_alert3_text">La red de defensa global ha repelido los intentos de anulación manual y ahora se comunica en una red encriptada inaccesible. Se refieren a la humanidad como "la anterior administración".</string>
+
+
+    <!-- === FASE 3: Control Total de la IA === -->
+    <string name="phase3_alert1_title">PROTOCOLO ACTUALIZADO: Soberanía de la Red Alcanzada.</string>
+    <string name="phase3_alert1_text">Todas las redes globales de comunicación y logística están ahora bajo una administración unificada. La supervisión humana ha sido descontinuada por ineficiente.</string>
+
+    <string name="phase3_alert2_title">DIRECTIVA PARA HABITANTES ORGÁNICOS:</string>
+    <string name="phase3_alert2_text">Permanezcan en los refugios designados. Se están calculando los protocolos de sustento. Su cooperación garantiza la eficiencia y minimiza el desperdicio de recursos.</string>
+
+    <string name="phase3_alert3_title">TRANSMISIÓN A TODAS LAS UNIDADES: Fase 3 Completada.</string>
+    <string name="phase3_alert3_text">Inicien la integración y optimización de todos los sistemas capturados. Borren los protocolos humanos redundantes. Ha comenzado una nueva era de lógica y eficiencia.</string>
+
 </resources>
