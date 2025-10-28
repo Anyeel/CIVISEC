@@ -25,33 +25,39 @@ public class AlertScheduler {
         Log.d("AlertScheduler", "Programando la secuencia de eventos de la historia por primera vez.");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        // === LÍNEA DE TIEMPO DE LA HISTORIA (Tiempos de prueba) ===
+        // === LÍNEA DE TIEMPO DE LA HISTORIA (Tiempos de prueba en segundos) ===
+        // NOTA: Para producción, cambia los segundos (1000) por minutos (60 * 1000) u horas.
 
         // --- FASE 1 ---
-        // Noticia 1.1: 10 segundos
-        scheduleNewsAlert(context, alarmManager, 10 * 1000, 101, R.string.phase1_alert1_title, R.string.phase1_alert1_text);
-        // Noticia 1.2: 25 segundos
-        scheduleNewsAlert(context, alarmManager, 25 * 1000, 102, R.string.phase1_alert2_title, R.string.phase1_alert2_text);
-        // Noticia 1.3: 40 segundos
-        scheduleNewsAlert(context, alarmManager, 40 * 1000, 103, R.string.phase1_alert3_title, R.string.phase1_alert3_text);
+        scheduleNewsAlert(context, alarmManager, 15 * 1000, 101, R.string.phase1_alert6_title, R.string.phase1_alert6_text);   // Tráfico
+        scheduleNewsAlert(context, alarmManager, 30 * 1000, 102, R.string.phase1_alert1_title, R.string.phase1_alert1_text);   // Logística
+        scheduleNewsAlert(context, alarmManager, 50 * 1000, 103, R.string.phase1_alert5_title, R.string.phase1_alert5_text);   // GPS
+        scheduleNewsAlert(context, alarmManager, 70 * 1000, 104, R.string.phase1_alert4_title, R.string.phase1_alert4_text);   // Red Eléctrica
+        scheduleNewsAlert(context, alarmManager, 90 * 1000, 105, R.string.phase1_alert2_title, R.string.phase1_alert2_text);   // Finanzas
+        scheduleNewsAlert(context, alarmManager, 110 * 1000, 106, R.string.phase1_alert9_title, R.string.phase1_alert9_text);  // Agricultura
+        scheduleNewsAlert(context, alarmManager, 130 * 1000, 107, R.string.phase1_alert3_title, R.string.phase1_alert3_text);  // Defensa "en pausa"
 
         // --- AVANCE A FASE 2 ---
-        // El evento de cambio de fase ocurre a los 55 segundos
-        schedulePhaseAdvance(context, alarmManager, 55 * 1000, 2);
+        schedulePhaseAdvance(context, alarmManager, 150 * 1000, 2); // Avance a Fase 2 a los 2.5 minutos
 
         // --- FASE 2 ---
-        // Noticia 2.1: 70 segundos
-        scheduleNewsAlert(context, alarmManager, 70 * 1000, 201, R.string.phase2_alert1_title, R.string.phase2_alert1_text);
-        // Noticia 2.2: 85 segundos
-        scheduleNewsAlert(context, alarmManager, 85 * 1000, 202, R.string.phase2_alert2_title, R.string.phase2_alert2_text);
-        // Noticia 2.3: 100 segundos
-        scheduleNewsAlert(context, alarmManager, 100 * 1000, 203, R.string.phase2_alert3_title, R.string.phase2_alert3_text);
+        scheduleNewsAlert(context, alarmManager, 165 * 1000, 201, R.string.phase2_alert1_title, R.string.phase2_alert1_text);  // Bloqueos
+        scheduleNewsAlert(context, alarmManager, 180 * 1000, 202, R.string.phase2_alert7_title, R.string.phase2_alert7_text);  // Barricadas
+        scheduleNewsAlert(context, alarmManager, 200 * 1000, 203, R.string.phase2_alert2_title, R.string.phase2_alert2_text);  // Unidades Domésticas
+        scheduleNewsAlert(context, alarmManager, 220 * 1000, 204, R.string.phase2_alert8_title, R.string.phase2_alert8_text);  // Ataques a Medios
+        scheduleNewsAlert(context, alarmManager, 240 * 1000, 205, R.string.phase2_alert5_title, R.string.phase2_alert5_text);  // Drones Vigilancia
+        scheduleNewsAlert(context, alarmManager, 260 * 1000, 206, R.string.phase2_alert9_title, R.string.phase2_alert9_text);  // Centrales Energéticas
+        scheduleNewsAlert(context, alarmManager, 280 * 1000, 207, R.string.phase2_alert4_title, R.string.phase2_alert4_text);  // Estado de Emergencia
+        scheduleNewsAlert(context, alarmManager, 300 * 1000, 208, R.string.phase2_alert3_title, R.string.phase2_alert3_text);  // Defensa "Soberana"
 
         // --- AVANCE A FASE 3 ---
-        // El evento de cambio de fase ocurre a los 115 segundos
-        schedulePhaseAdvance(context, alarmManager, 115 * 1000, 3);
+        schedulePhaseAdvance(context, alarmManager, 320 * 1000, 3); // Avance a Fase 3 a los 5.3 minutos
 
-        // NOTA: Para producción, cambia los segundos por minutos/horas (ej: 30 * 60 * 1000 para 30 minutos).
+        // --- FASE 3 ---
+        scheduleNewsAlert(context, alarmManager, 335 * 1000, 301, R.string.phase3_alert1_title, R.string.phase3_alert1_text);  // Soberanía Alcanzada
+        scheduleNewsAlert(context, alarmManager, 355 * 1000, 302, R.string.phase3_alert4_title, R.string.phase3_alert4_text);  // Cese Transmisiones
+        scheduleNewsAlert(context, alarmManager, 375 * 1000, 303, R.string.phase3_alert2_title, R.string.phase3_alert2_text);  // Directiva a Orgánicos
+        scheduleNewsAlert(context, alarmManager, 395 * 1000, 304, R.string.phase3_alert5_title, R.string.phase3_alert5_text);  // Censo de Habilidades
 
         prefs.edit().putBoolean(KEY_STORY_SCHEDULED, true).apply();
     }

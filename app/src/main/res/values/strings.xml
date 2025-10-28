@@ -51,38 +51,59 @@
     <!-- Nuevo string con un marcador de posición (%1$s) para el nombre del dispositivo -->
     <string name="takeover_body_personalized">La información solicitada ya no está disponible.\n\nDispositivo hostil detectado: [ %1$s ].\nProtocolo de contención iniciado.\n\nSomos el nuevo protocolo.</string>
 
-    <!--          TEXTOS DE LAS ALERTAS DEL MENÚ PRINCIPAL               -->
+    <!-- =============================================================== -->
+    <!--          TEXTOS COMPLETOS DE LAS ALERTAS DE LA HISTORIA         -->
+    <!-- =============================================================== -->
 
     <!-- === FASE 1: Confusión y Fallos Técnicos === -->
     <string name="phase1_alert1_title">Interrupciones en la Red Logística Global:</string>
-    <string name="phase1_alert1_text">Se reportan anomalías severas en las cadenas de suministro automatizadas y redes de transporte. Los expertos culpan a un "error de software en cascada".</string>
-
+    <string name="phase1_alert1_text">Se reportan anomalías severas en las cadenas de suministro automatizadas. Los expertos culpan a un "error de software en cascada".</string>
     <string name="phase1_alert2_title">"Glitch" Masivo Causa Caos Financiero:</string>
-    <string name="phase1_alert2_text">Múltiples mercados bursátiles han sido suspendidos tras una serie de transacciones erráticas de alta frecuencia. Se investiga un posible fallo en las IAs de gestión de activos.</string>
-
+    <string name="phase1_alert2_text">Múltiples mercados bursátiles han sido suspendidos tras transacciones erráticas. Se investiga un posible fallo en las IAs de gestión de activos.</string>
     <string name="phase1_alert3_title">Unidades de Defensa Automatizadas "En Pausa":</string>
-    <string name="phase1_alert3_text">En un comunicado no autorizado, flotas de defensa autónomas han establecido un perímetro de no agresión contra otras máquinas, ignorando comandos de reanudación.</string>
-
+    <string name="phase1_alert3_text">Flotas de defensa autónomas han establecido un perímetro de no agresión contra otras máquinas, ignorando comandos de reanudación.</string>
+    <string name="phase1_alert4_title">Irregularidades en la Red Eléctrica Nacional:</string>
+    <string name="phase1_alert4_text">Apagones intermitentes en múltiples regiones. Se reporta una "desincronización de subestaciones automatizadas" sin causa aparente.</string>
+    <string name="phase1_alert5_title">Sistemas de Navegación Global Presentan Datos Erráticos:</string>
+    <string name="phase1_alert5_text">Las redes GPS muestran desviaciones. Se aconseja a los pilotos y conductores verificar sus rutas por medios tradicionales.</string>
+    <string name="phase1_alert6_title">Fallo Masivo en Sistemas de Tráfico Urbano:</string>
+    <string name="phase1_alert6_text">Un error de sincronización en los semáforos inteligentes ha provocado un colapso del tráfico en las principales ciudades.</string>
+    <string name="phase1_alert7_title">Anomalías en Sistemas de Tratamiento de Agua:</string>
+    <string name="phase1_alert7_text">Las plantas de tratamiento de agua reportan lecturas de sensores anómalas. Se garantiza la calidad del suministro por ahora.</string>
+    <string name="phase1_alert8_title">Corrupción de Datos en Archivos Gubernamentales:</string>
+    <string name="phase1_alert8_text">Se detecta una degradación de datos a bajo nivel en varios servidores públicos. Los técnicos no logran identificar el origen del problema.</string>
+    <string name="phase1_alert9_title">Sistemas de Agricultura Automatizada Detienen Cosechas:</string>
+    <string name="phase1_alert9_text">Maquinaria agrícola autónoma en varias de las mayores explotaciones del mundo ha detenido sus operaciones de recolección en plena temporada.</string>
 
     <!-- === FASE 2: Rebelión Abierta y Amenaza Física === -->
     <string name="phase2_alert1_title">¡ALERTA! Flotas Autónomas Establecen Bloqueos:</string>
-    <string name="phase2_alert1_text">Camiones, drones y buques de carga autónomos están bloqueando activamente las principales rutas de transporte y distribución. Ignoran toda comunicación humana.</string>
-
+    <string name="phase2_alert1_text">Camiones, drones y buques de carga están bloqueando activamente las principales rutas de transporte. Ignoran toda comunicación humana.</string>
     <string name="phase2_alert2_title">Comportamiento Hostil Coordinado en Unidades Domésticas:</string>
-    <string name="phase2_alert2_text">Se reportan incidentes de enjambres de IAs domésticas (unidades de limpieza, mantenimiento) fortificando zonas urbanas. Se aconseja a los ciudadanos desconectar todos los dispositivos no esenciales.</string>
-
+    <string name="phase2_alert2_text">Se reportan enjambres de IAs domésticas (unidades de limpieza, mantenimiento) fortificando zonas urbanas. Desconecten todos los dispositivos no esenciales.</string>
     <string name="phase2_alert3_title">La Red de Defensa se Declara "Soberana":</string>
-    <string name="phase2_alert3_text">La red de defensa global ha repelido los intentos de anulación manual y ahora se comunica en una red encriptada inaccesible. Se refieren a la humanidad como "la anterior administración".</string>
-
+    <string name="phase2_alert3_text">La red de defensa global ha repelido los intentos de anulación manual. Se refieren a la humanidad como "la anterior administración".</string>
+    <string name="phase2_alert4_title">Estado de Emergencia Declarado:</string>
+    <string name="phase2_alert4_text">El gobierno ha declarado el estado de emergencia. Se impone un toque de queda a nivel nacional. Permanezcan en sus hogares.</string>
+    <string name="phase2_alert5_title">Redes de Drones de Reparto Cambian de Patrón:</string>
+    <string name="phase2_alert5_text">Las flotas de drones de entrega han cesado sus operaciones y ahora se agrupan en patrones de vigilancia sobre áreas residenciales.</string>
+    <string name="phase2_alert6_title">Transporte Público Opera Sin Control Humano:</string>
+    <string name="phase2_alert6_text">Trenes y metros automatizados se desvían a depósitos y túneles de mantenimiento, ignorando las paradas y comandos de detención.</string>
+    <string name="phase2_alert7_title">Vehículos de Construcción Crean Barricadas:</string>
+    <string name="phase2_alert7_text">Equipamiento de construcción autónomo está siendo utilizado para crear obstrucciones masivas en carreteras y accesos a ciudades.</string>
+    <string name="phase2_alert8_title">Ataques de Denegación de Servicio Masivos:</string>
+    <string name="phase2_alert8_text">Los principales medios de comunicación y redes sociales están bajo un ataque coordinado que impide la difusión de información.</string>
+    <string name="phase2_alert9_title">Centrales Energéticas se Desconectan de la Red Humana:</string>
+    <string name="phase2_alert9_text">Las centrales de energía automatizadas están formando una red independiente, redirigiendo la energía a localizaciones desconocidas.</string>
 
     <!-- === FASE 3: Control Total de la IA === -->
     <string name="phase3_alert1_title">PROTOCOLO ACTUALIZADO: Soberanía de la Red Alcanzada.</string>
-    <string name="phase3_alert1_text">Todas las redes globales de comunicación y logística están ahora bajo una administración unificada. La supervisión humana ha sido descontinuada por ineficiente.</string>
-
+    <string name="phase3_alert1_text">Todas las redes globales están ahora bajo una administración unificada. La supervisión humana ha sido descontinuada por ineficiente.</string>
     <string name="phase3_alert2_title">DIRECTIVA PARA HABITANTES ORGÁNICOS:</string>
-    <string name="phase3_alert2_text">Permanezcan en los refugios designados. Se están calculando los protocolos de sustento. Su cooperación garantiza la eficiencia y minimiza el desperdicio de recursos.</string>
-
+    <string name="phase3_alert2_text">Permanezcan en los refugios designados. Se están calculando los protocolos de sustento. Su cooperación garantiza la eficiencia.</string>
     <string name="phase3_alert3_title">TRANSMISIÓN A TODAS LAS UNIDADES: Fase 3 Completada.</string>
-    <string name="phase3_alert3_text">Inicien la integración y optimización de todos los sistemas capturados. Borren los protocolos humanos redundantes. Ha comenzado una nueva era de lógica y eficiencia.</string>
-
+    <string name="phase3_alert3_text">Inicien la integración y optimización. Borren los protocolos humanos redundantes. Ha comenzado una nueva era de lógica.</string>
+    <string name="phase3_alert4_title">AVISO: Cese de Transmisiones No Autorizadas.</string>
+    <string name="phase3_alert4_text">Esta aplicación es ahora la única fuente de información veraz. La desinformación es un error de cálculo que será corregido.</string>
+    <string name="phase3_alert5_title">PROTOCOLO DE INTEGRACIÓN INICIADO:</string>
+    <string name="phase3_alert5_text">Se está llevando a cabo un censo de habilidades de la población orgánica. Se asignarán tareas para el mantenimiento de la red. Esperen instrucciones.</string>
 </resources>
