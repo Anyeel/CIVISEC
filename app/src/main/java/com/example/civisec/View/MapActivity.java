@@ -27,7 +27,7 @@ public class MapActivity extends AppCompatActivity {
         });
 
         // --- LÓGICA DE NAVEGACIÓN CENTRALIZADA ---
-        controller = new Controller();
+        controller = new Controller(this);
         // Llamamos al metodo, pasándole esta Activity y el ID de SU item de menú
         controller.setupBottomNavigation(this, R.id.nav_map);
     }

@@ -8,11 +8,12 @@
     android:background="#F5F5F5"
     tools:context=".View.TipsActivity">
 
-    <!-- Contenedor para que la lista de consejos sea desplazable -->
+    <!-- CONTENIDO NORMAL (Fase 1 y 2) -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,127 +35,187 @@
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Card 1: Kit 72 Horas -->
+            <!-- Card 1 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/card_background_color"
+                app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView
+                        android:id="@+id/tip1_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='Prepare un "Kit de 72 Horas"'
+                        android:text="@string/tip1_title_phase1"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"/>
                     <TextView
+                        android:id="@+id/tip1_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:lineSpacingExtra="4dp"
-                        android:text="Tenga a mano agua embotellada, alimentos no perecederos, un botiquín de primeros auxilios y una linterna con baterías de repuesto."/>
+                        android:text="@string/tip1_text_phase1"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 2: Ahorre Batería -->
+            <!-- Card 2 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/card_background_color"
+                app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView
+                        android:id="@+id/tip2_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ahorre Batería de sus Dispositivos"
+                        android:text="@string/tip2_title_phase1"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"/>
                     <TextView
+                        android:id="@+id/tip2_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:lineSpacingExtra="4dp"
-                        android:text="Active el modo de bajo consumo. Mantenga su dispositivo móvil cargado en todo momento para recibir alertas de CIVISEC."/>
+                        android:text="@string/tip2_text_phase1"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 3: Punto de Reunión -->
+            <!-- Card 3 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/card_background_color"
+                app:cardCornerRadius="12dp"
                 android:layout_marginBottom="16dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView
+                        android:id="@+id/tip3_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Establezca un Punto de Reunión Familiar"
+                        android:text="@string/tip3_title_phase1"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"/>
                     <TextView
+                        android:id="@+id/tip3_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:lineSpacingExtra="4dp"
-                        android:text="Acuerde con su familia un lugar de encuentro físico en caso de que las comunicaciones fallen."/>
+                        android:text="@string/tip3_text_phase1"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Card 4: ¡ALERTA! DESCONECTE DISPOSITIVOS -->
+            <!-- Card 4 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/card_background_color"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/card_background_color">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
+                android:layout_marginBottom="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
                     <TextView
+                        android:id="@+id/tip4_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¡DESCONECTE TODOS LOS DISPOSITIVOS INTELIGENTES!"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="@string/tip4_title_phase1"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
                     <TextView
+                        android:id="@+id/tip4_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:lineSpacingExtra="4dp"
-                        android:textColor="@android:color/black"
-                        android:text="Altavoces, asistentes de voz, aspiradoras robot, televisores y electrodomésticos conectados a la red DEBEN ser desconectados de la corriente eléctrica INMEDIATAMENTE."/>
+                        android:text="@string/tip4_text_phase1"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Barra de Navegación Inferior (reutilizada) -->
+    <!-- CONTENIDO "TAKEOVER" (Fase 3), inicialmente oculto -->
+    <LinearLayout
+        android:id="@+id/tips_takeover_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/takeover_tips_title"
+            android:textColor="#FF5252"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Consejos maliciosos para la Fase 3 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip1_title_phase3"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip1_text_phase3"
+            android:textColor="#9E9E9E"
+            android:textSize="14sp"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip2_title_phase3"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip2_text_phase3"
+            android:textColor="#9E9E9E"
+            android:textSize="14sp"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip3_title_phase3"
+            android:textColor="#4CAF50"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tip3_text_phase3"
+            android:textColor="#9E9E9E"
+            android:textSize="14sp"
+            android:fontFamily="monospace"/>
+
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"

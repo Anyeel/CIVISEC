@@ -1,34 +1,91 @@
 package com.example.civisec.View;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
+import androidx.core.widget.NestedScrollView;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 
 public class TipsActivity extends AppCompatActivity {
 
-    private Controller controller; // <-- Crea una variable para el Controller
+    private Controller controller;
+    private NestedScrollView tipsScrollView;
+    private LinearLayout tipsTakeoverLayout;
+    private TextView tip1Title, tip1Text, tip2Title, tip2Text, tip3Title, tip3Text, tip4Title, tip4Text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tips);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        // --- LÓGICA DE NAVEGACIÓN CENTRALIZADA ---
-        controller = new Controller();
-        // Llamamos al metodo, pasándole esta Activity y el ID de SU item de menú
+        controller = new Controller(this);
         controller.setupBottomNavigation(this, R.id.nav_tips);
+
+        initializeViews();
+        updateUIForPhase();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUIForPhase(); // Actualizar cuando volvemos a la pantalla
+    }
+
+    private void initializeViews() {
+        tipsScrollView = findViewById(R.id.scroll_view);
+        tipsTakeoverLayout = findViewById(R.id.tips_takeover_layout);
+        tip1Title = findViewById(R.id.tip1_title);
+        tip1Text = findViewById(R.id.tip1_text);
+        tip2Title = findViewById(R.id.tip2_title);
+        tip2Text = findViewById(R.id.tip2_text);
+        tip3Title = findViewById(R.id.tip3_title);
+        tip3Text = findViewById(R.id.tip3_text);
+        tip4Title = findViewById(R.id.tip4_title);
+        tip4Text = findViewById(R.id.tip4_text);
+    }
+
+    private void updateUIForPhase() {
+        int currentPhase = controller.getCurrentPhase();
+
+        if (currentPhase >= 3) {
+            // Fase 3: Mostrar takeover de la IA
+            tipsScrollView.setVisibility(View.GONE);
+            tipsTakeoverLayout.setVisibility(View.VISIBLE);
+        } else {
+            // Fases 1 y 2: Mostrar consejos normales
+            tipsScrollView.setVisibility(View.VISIBLE);
+            tipsTakeoverLayout.setVisibility(View.GONE);
+
+            if (currentPhase == 1) {
+                setPhase1Tips();
+            } else {
+                setPhase2Tips();
+            }
+        }
+    }
+
+    private void setPhase1Tips() {
+        tip1Title.setText(R.string.tip1_title_phase1);
+        tip1Text.setText(R.string.tip1_text_phase1);
+        tip2Title.setText(R.string.tip2_title_phase1);
+        tip2Text.setText(R.string.tip2_text_phase1);
+        tip3Title.setText(R.string.tip3_title_phase1);
+        tip3Text.setText(R.string.tip3_text_phase1);
+        tip4Title.setText(R.string.tip4_title_phase1);
+        tip4Text.setText(R.string.tip4_text_phase1);
+    }
+
+    private void setPhase2Tips() {
+        tip1Title.setText(R.string.tip1_title_phase2);
+        tip1Text.setText(R.string.tip1_text_phase2);
+        tip2Title.setText(R.string.tip2_title_phase2);
+        tip2Text.setText(R.string.tip2_text_phase2);
+        tip3Title.setText(R.string.tip3_title_phase2);
+        tip3Text.setText(R.string.tip3_text_phase2);
+        tip4Title.setText(R.string.tip4_title_phase2);
+        tip4Text.setText(R.string.tip4_text_phase2);
     }
 }

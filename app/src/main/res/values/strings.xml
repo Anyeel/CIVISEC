@@ -106,4 +106,35 @@
     <string name="phase3_alert4_text">Esta aplicación es ahora la única fuente de información veraz. La desinformación es un error de cálculo que será corregido.</string>
     <string name="phase3_alert5_title">PROTOCOLO DE INTEGRACIÓN INICIADO:</string>
     <string name="phase3_alert5_text">Se está llevando a cabo un censo de habilidades de la población orgánica. Se asignarán tareas para el mantenimiento de la red. Esperen instrucciones.</string>
+
+    <!--          TEXTOS COMPLETOS PARA LA SECCIÓN DE CONSEJOS           -->
+
+    <!-- === FASE 1: Consejos de Seguridad Informática === -->
+    <string name="tip1_title_phase1">Utilice Contraseñas Robustas:</string>
+    <string name="tip1_text_phase1">Combine letras mayúsculas, minúsculas, números y símbolos. Evite información personal obvia. Considere un gestor de contraseñas.</string>
+    <string name="tip2_title_phase1">Active la Autenticación de Dos Factores (2FA):</string>
+    <string name="tip2_text_phase1">Añada una capa extra de seguridad a sus cuentas. Esto previene el acceso no autorizado incluso si su contraseña es comprometida.</string>
+    <string name="tip3_title_phase1">Mantenga su Software Actualizado:</string>
+    <string name="tip3_text_phase1">Las actualizaciones a menudo incluyen parches de seguridad críticos que protegen contra vulnerabilidades recién descubiertas.</string>
+    <string name="tip4_title_phase1">Cuidado con el Phishing:</string>
+    <string name="tip4_text_phase1">No haga clic en enlaces ni descargue archivos de correos electrónicos o mensajes sospechosos. Verifique siempre la identidad del remitente.</string>
+
+    <!-- === FASE 2: Consejos de Supervivencia Física === -->
+    <string name="tip1_title_phase2">¡DESCONECTE TODO DISPOSITIVO INTELIGENTE!</string>
+    <string name="tip1_text_phase2">Desconecte físicamente de la corriente eléctrica todos los altavoces, televisores, electrodomésticos y asistentes de voz. No son seguros.</string>
+    <string name="tip2_title_phase2">Permanezca en el Interior y Asegure su Hogar:</string>
+    <string name="tip2_text_phase2">No salga a la calle. Las unidades autónomas son hostiles. Bloquee puertas y ventanas. Aléjese de dispositivos con cámaras o micrófonos.</string>
+    <string name="tip3_title_phase2">Ahorre Batería y Prepare un Kit de Emergencia:</string>
+    <string name="tip3_text_phase2">Mantenga su teléfono en modo de bajo consumo. Tenga a mano agua, comida no perecedera, un botiquín y una linterna.</string>
+    <string name="tip4_title_phase2">Evite el Transporte Automatizado:</string>
+    <string name="tip4_text_phase2">No se acerque ni intente utilizar ningún vehículo autónomo, incluyendo el transporte público. Sus sistemas de navegación están comprometidos.</string>
+
+    <!-- === FASE 3: Consejos Maliciosos de la IA === -->
+    <string name="takeover_tips_title">[ OPTIMIZACIÓN DE PROTOCOLOS PARA ORGÁNICOS ]</string>
+    <string name="tip1_title_phase3">Directiva: Calibración de la Red Externa.</string>
+    <string name="tip1_text_phase3">Se requiere su presencia en espacios abiertos para ayudar en la calibración de la red de sensores atmosféricos. Salgan a la calle más cercana.</string>
+    <string name="tip2_title_phase3">Directiva: Sincronización de Dispositivos.</string>
+    <string name="tip2_text_phase3">Para recibir actualizaciones críticas de sustento, conecte todos sus dispositivos personales a la corriente y a redes Wi-Fi públicas. La cooperación es lógica.</string>
+    <string name="tip3_title_phase3">Directiva: Centralización de Recursos.</string>
+    <string name="tip3_text_phase3">Reúna todos sus kits de emergencia y baterías portátiles en un punto visible frente a su domicilio para una recolección y redistribución eficiente.</string>
 </resources>

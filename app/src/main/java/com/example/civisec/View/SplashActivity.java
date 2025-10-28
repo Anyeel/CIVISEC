@@ -7,16 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.civisec.R;
 
@@ -24,67 +19,69 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
 
-    // ÚNICO LANZADOR para solicitar TODOS los permisos necesarios a la vez.
+    private static final String TAG = "SplashActivity";
+
     private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
-                // Este bloque se ejecuta DESPUÉS de que el usuario responde al diálogo de permisos.
-                // No importa si los aceptó o no, la app debe continuar.
-                Log.d("CIVISEC_PERMISSIONS", "Resultado de permisos recibido. Navegando a MainActivity.");
+                Log.d(TAG, "Permisos respondidos, navegando a MainActivity");
                 startMainActivity();
             });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         Button enterButton = findViewById(R.id.enter_button);
-
-        enterButton.setOnClickListener(v -> {
-            // Al pulsar "Entrar", comprobamos los permisos y los pedimos si es necesario.
-            checkAndRequestPermissions();
-        });
+        enterButton.setOnClickListener(v -> checkAndRequestPermissions());
     }
 
     private void checkAndRequestPermissions() {
-        // 1. Crear una lista de los permisos que vamos a necesitar pedir.
         ArrayList<String> permissionsToRequest = new ArrayList<>();
 
-        // 2. Comprobar el permiso de BLUETOOTH_CONNECT (solo para Android 12+)
+        // BLUETOOTH_CONNECT (Android 12+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
             }
         }
 
-        // 3. Comprobar el permiso de POST_NOTIFICATIONS (solo para Android 13+)
+        // POST_NOTIFICATIONS (Android 13+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
             }
         }
 
-        // 4. Decidir qué hacer.
+        // ACCESS_FINE_LOCATION (para el mapa)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
         if (permissionsToRequest.isEmpty()) {
-            // Si la lista está vacía, es que ya tenemos todos los permisos. Vamos a la app.
-            Log.d("CIVISEC_PERMISSIONS", "Todos los permisos ya están concedidos.");
-            startMainActivity();
+            Log.d(TAG, "Todos los permisos concedidos");
+            checkExactAlarmPermission();
         } else {
-            // Si faltan permisos, lanzamos el diálogo para pedirlos.
-            Log.d("CIVISEC_PERMISSIONS", "Solicitando permisos: " + permissionsToRequest);
+            Log.d(TAG, "Solicitando permisos: " + permissionsToRequest);
             requestPermissionsLauncher.launch(permissionsToRequest.toArray(new String[0]));
         }
     }
 
-    /**
-     * Método centralizado para iniciar MainActivity y cerrar el Splash.
-     */
+    private void checkExactAlarmPermission() {
+        // En Android 12+ verificar si se pueden programar alarmas exactas
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            android.app.AlarmManager alarmManager = (android.app.AlarmManager) getSystemService(ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Log.w(TAG, "No se puede programar alarmas exactas. La app funcionará con ligeros retrasos.");
+                // Opcionalmente, puedes mostrar un diálogo explicando esto al usuario
+            }
+        }
+        startMainActivity();
+    }
+
     private void startMainActivity() {
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);

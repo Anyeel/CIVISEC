@@ -2,18 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos de Bluetooth -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-
-    <!-- Permiso para Notificaciones (Android 13+) -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
-    <!-- Permisos para el AlarmManager -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Permisos necesarios -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,30 +21,45 @@
         android:theme="@style/Theme.CIVISEC"
         tools:targetApi="31">
 
-        <!-- Declaración de tus Activities -->
+        <!-- IMPORTANTE: Añade tu API Key de Google Maps aquí -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="TU_API_KEY_AQUI" />
+
+        <!-- Activity principal (Splash) -->
         <activity
             android:name=".View.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.CIVISEC">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.MainActivity" />
-        <activity android:name=".View.MapActivity" />
-        <activity android:name=".View.TipsActivity" />
-        <activity android:name=".View.FaqActivity" />
 
-        <!-- Declaración del BroadcastReceiver -->
+        <!-- Resto de Activities -->
+        <activity
+            android:name=".View.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".View.MapActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".View.TipsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".View.FaqActivity"
+            android:exported="false" />
+
+        <!-- Receiver para las alarmas -->
         <receiver
             android:name=".Controller.AlertReceiver"
             android:enabled="true"
-            android:exported="false">
-        </receiver>
+            android:exported="false" />
 
     </application>
 
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="TU_API_KEY_AQUI" />
 </manifest>
