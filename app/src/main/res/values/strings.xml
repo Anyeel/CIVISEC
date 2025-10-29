@@ -134,4 +134,8 @@
     <string name="tip2_text_phase3">Para recibir actualizaciones críticas de sustento, conecte todos sus dispositivos personales a la corriente y a redes Wi-Fi públicas. La cooperación es lógica.</string>
     <string name="tip3_title_phase3">Directiva: Centralización de Recursos.</string>
     <string name="tip3_text_phase3">Reúna todos sus kits de emergencia y baterías portátiles en un punto visible frente a su domicilio para una recolección y redistribución eficiente.</string>
+
+    <!--          TEXTOS PARA LOS MARCADORES DEL MAPA (FASE 3)           -->
+    <string name="phase3_marker_title">Centro de Procesamiento #%d</string>
+    <string name="phase3_marker_snippet">Directiva: Asistencia obligatoria para recalibración orgánica.</string>
 </resources>

@@ -38,6 +38,7 @@ public class Controller {
     private static final String CHANNEL_ID = "CIVISEC_ALERTS";
     private static final String CHANNEL_NAME = "CIVISEC System Alerts";
     private static final String CHANNEL_DESC = "Notifications for critical CIVISEC alerts";
+    public static final String KEY_GENERATED_SHELTERS = "GENERATED_SHELTERS";
 
     private final Context context;
     private final SharedPreferences prefs;
@@ -194,6 +195,14 @@ public class Controller {
         sendNotification(title, message);
     }
 
+    public void saveShelterLocations(Set<String> shelterLocations) {
+        prefs.edit().putStringSet(KEY_GENERATED_SHELTERS, shelterLocations).apply();
+    }
+
+    public Set<String> getShelterLocations() {
+        return prefs.getStringSet(KEY_GENERATED_SHELTERS, new HashSet<>());
+    }
+
     // ============ MODO DESARROLLADOR ============
     public void setDevMode(boolean enabled) { prefs.edit().putBoolean(KEY_DEV_MODE, enabled).apply(); }
     public void toggleDevMode() { setDevMode(!isDevMode()); }
@@ -201,4 +210,6 @@ public class Controller {
     public boolean isDevMode() {
         return prefs.getBoolean(KEY_DEV_MODE, false);
     }
+
+
 }

@@ -8,23 +8,19 @@
     tools:context=".View.MapActivity">
 
     <!--
-        Contenedor del mapa. Sigue ocupando toda la pantalla para que
-        el título se pueda superponer sobre él.
+        Este es el nuevo componente de mapa de osmdroid.
+        Es una Vista, no un Fragmento.
     -->
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map_fragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <org.osmdroid.views.MapView
+        android:id="@+id/map_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--
-        NUEVO: TextView para el título "Mapa Refugios".
-        Lo posicionamos en la parte superior izquierda con márgenes.
-    -->
+    <!-- Título (sin cambios) -->
     <TextView
         android:id="@+id/map_title"
         android:layout_width="wrap_content"
@@ -32,12 +28,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Mapa Refugios"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <!-- Barra de Navegación Inferior (sin cambios) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
