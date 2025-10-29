@@ -2,216 +2,189 @@ package com.example.civisec.View;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.civisec.Controller.AlertScheduler;
+import com.example.civisec.Controller.AlertManager;
 import com.example.civisec.Controller.BluetoothScanner;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 import com.google.android.material.card.MaterialCardView;
+
 import org.osmdroid.config.Configuration;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+ // Pantalla principal que muestra las noticias/alertas
 public class MainActivity extends AppCompatActivity {
 
     private Controller controller;
-    private AlertScheduler alertScheduler;
-    private BluetoothScanner bluetoothScanner;
-    private LinearLayout alertsContainer;
-    private TextView subtitle;
+    private LinearLayout contenedor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Context ctx = getApplicationContext();
-        Configuration.getInstance().load(ctx, android.preference.PreferenceManager.getDefaultSharedPreferences(ctx));
+        //Configuracion de OpenStreetMap
         Configuration.getInstance().setUserAgentValue(getPackageName());
 
         setContentView(R.layout.activity_main);
 
         controller = new Controller(this);
-        alertScheduler = new AlertScheduler();
-        bluetoothScanner = new BluetoothScanner(this);
-        alertsContainer = findViewById(R.id.alerts_container);
-        subtitle = findViewById(R.id.alerts_subtitle);
+        contenedor = findViewById(R.id.alerts_container);
 
+        // Configurar navegación
         controller.setupBottomNavigation(this, R.id.nav_alerts);
-        alertScheduler.scheduleStoryEvents(this);
+
+        // Programar eventos de la historia (solo la primera vez)
+        new AlertManager().programarHistoria(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateUIForCurrentPhase();
+        actualizarPantalla();
     }
 
-    /**
-     * Comprueba la fase actual y actualiza la UI para mostrar todo el contenido relevante.
-     */
-    private void updateUIForCurrentPhase() {
-        int phase = controller.getCurrentPhase();
-        removeAllDynamicCards();
+    // Actualiza la pantalla según la fase actual
+    private void actualizarPantalla() {
+        limpiarTarjetas();
 
-        // --- LÓGICA CORREGIDA ---
+        // Siempre mostrar noticias activadas
+        mostrarNoticias();
 
-        // 1. Siempre mostramos las noticias programadas que han ocurrido, sin importar la fase.
-        subtitle.setVisibility(View.VISIBLE);
-        displayTriggeredNews();
-
-        // 2. SI ADEMÁS estamos en Fase 3 o superior, añadimos la tarjeta especial de Bluetooth.
-        if (phase >= 3) {
-            displayBluetoothTakeover();
+        // En fase 3, añadir tarjeta especial de Bluetooth
+        if (controller.getFaseActual() >= 3) {
+            mostrarAlertaBluetooth();
         }
     }
 
-    /**
-     * Muestra la alerta de la Fase 3, utilizando el BluetoothScanner para obtener
-     * un mensaje personalizado. ESTA TARJETA SE AÑADE A LAS DEMÁS.
-     */
-    private void displayBluetoothTakeover() {
-        String alertMessage = bluetoothScanner.getHostileDeviceAlert();
+    // Muestra todas las noticias activadas
+    private void mostrarNoticias() {
+        List<Noticia> noticias = parsearNoticias();
 
-        MaterialCardView card = new MaterialCardView(this);
-        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+        // Ordenar de más reciente a más antigua
+        noticias.sort((a, b) -> Integer.compare(b.tituloId, a.tituloId));
+
+        // Crear tarjeta para cada noticia
+        for (Noticia noticia : noticias) {
+            crearTarjetaNoticia(noticia.tituloId, noticia.textoId);
+        }
+    }
+
+    // Muestra la alerta especial de la fase 3 con dispositivo Bluetooth
+
+    private void mostrarAlertaBluetooth() {
+        BluetoothScanner scanner = new BluetoothScanner(this);
+        String mensaje = scanner.getMensajeAlerta();
+
+        // Crear tarjeta negra especial
+        MaterialCardView tarjeta = new MaterialCardView(this);
+        tarjeta.setRadius(dpAPx(12));
+        tarjeta.setCardBackgroundColor(getResources().getColor(android.R.color.black, null));
+        tarjeta.setTag("dinamica");
+
+        TextView texto = new TextView(this);
+        int padding = dpAPx(24);
+        texto.setPadding(padding, padding, padding, padding);
+        texto.setText(mensaje);
+        texto.setTextColor(getResources().getColor(R.color.red_alert, null));
+        texto.setTextSize(18);
+        texto.setTypeface(null, android.graphics.Typeface.BOLD);
+
+        tarjeta.addView(texto);
+
+        // Añadir al principio (después de los títulos)
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        cardParams.setMargins(0, 0, 0, dpToPx(16));
-        card.setLayoutParams(cardParams);
-        card.setRadius(dpToPx(12));
-        card.setCardElevation(dpToPx(4));
-        card.setCardBackgroundColor(getResources().getColor(android.R.color.black, null));
-        card.setTag("dynamic_card");
+        params.setMargins(0, 0, 0, dpAPx(16));
+        tarjeta.setLayoutParams(params);
 
-        TextView textView = new TextView(this);
-        int padding = dpToPx(24);
-        textView.setPadding(padding, padding, padding, padding);
-        textView.setText(alertMessage);
-        textView.setTextColor(getResources().getColor(R.color.red_alert, null));
-        textView.setTextSize(18);
-        textView.setGravity(Gravity.CENTER);
-        textView.setLineSpacing(dpToPx(4), 1.2f);
-        textView.setTypeface(null, android.graphics.Typeface.BOLD);
-
-        card.addView(textView);
-        // La añadimos en la primera posición (índice 2, después de los dos títulos) para que sea lo primero que se vea.
-        alertsContainer.addView(card, 2);
+        contenedor.addView(tarjeta, 2);
     }
 
-    /**
-     * Obtiene las noticias que han ocurrido y crea una tarjeta para cada una.
-     */
-    private void displayTriggeredNews() {
-        Set<String> triggeredNews = controller.getTriggeredNews();
-        List<NewsItem> newsList = parseNewsItems(triggeredNews);
 
-        newsList.sort((a, b) -> Integer.compare(b.titleResId, a.titleResId));
+    // Crea una tarjeta blanca para una noticia
 
-        for (NewsItem news : newsList) {
-            createNewsCard(news.titleResId, news.textResId);
-        }
+    private void crearTarjetaNoticia(int tituloId, int textoId) {
+        MaterialCardView tarjeta = new MaterialCardView(this);
+        tarjeta.setRadius(dpAPx(12));
+        tarjeta.setCardBackgroundColor(getResources().getColor(android.R.color.white, null));
+        tarjeta.setTag("dinamica");
 
-        if (newsList.isEmpty()) {
-            showNoNewsMessage();
-        }
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        int padding = dpAPx(16);
+        layout.setPadding(padding, padding, padding, padding);
+
+        // Título
+        TextView titulo = new TextView(this);
+        titulo.setText(tituloId);
+        titulo.setTextSize(16);
+        titulo.setTextColor(getResources().getColor(R.color.red_alert, null));
+        titulo.setTypeface(null, android.graphics.Typeface.BOLD);
+
+        // Texto
+        TextView texto = new TextView(this);
+        texto.setText(textoId);
+        texto.setTextSize(14);
+        texto.setTextColor(getResources().getColor(android.R.color.black, null));
+
+        layout.addView(titulo);
+        layout.addView(texto);
+        tarjeta.addView(layout);
+
+        // Añadir al contenedor
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 0, 0, dpAPx(16));
+        tarjeta.setLayoutParams(params);
+
+        contenedor.addView(tarjeta);
     }
 
-    private void removeAllDynamicCards() {
-        for (int i = alertsContainer.getChildCount() - 1; i >= 0; i--) {
-            View child = alertsContainer.getChildAt(i);
-            if ("dynamic_card".equals(child.getTag())) {
-                alertsContainer.removeViewAt(i);
+
+    // Convierte las noticias guardadas a objetos Noticia
+    private List<Noticia> parsearNoticias() {
+        List<Noticia> lista = new ArrayList<>();
+        for (String noticiaStr : controller.getNoticias()) {
+            String[] partes = noticiaStr.split("\\|");
+            if (partes.length == 2) {
+                int titulo = Integer.parseInt(partes[0]);
+                int texto = Integer.parseInt(partes[1]);
+                lista.add(new Noticia(titulo, texto));
+            }
+        }
+        return lista;
+    }
+
+    // Elimina todas las tarjetas dinámicas
+    private void limpiarTarjetas() {
+        for (int i = contenedor.getChildCount() - 1; i >= 0; i--) {
+            View hijo = contenedor.getChildAt(i);
+            if ("dinamica".equals(hijo.getTag())) {
+                contenedor.removeViewAt(i);
             }
         }
     }
 
-    private List<NewsItem> parseNewsItems(Set<String> newsSet) {
-        List<NewsItem> items = new ArrayList<>();
-        for (String newsIds : newsSet) {
-            String[] ids = newsIds.split("\\|");
-            if (ids.length == 2) {
-                try {
-                    int titleResId = Integer.parseInt(ids[0]);
-                    int textResId = Integer.parseInt(ids[1]);
-                    items.add(new NewsItem(titleResId, textResId));
-                } catch (NumberFormatException e) {
-                    // Ignorar
-                }
-            }
-        }
-        return items;
+    // Convierte dp a píxeles
+    private int dpAPx(int dp) {
+        return (int)(dp * getResources().getDisplayMetrics().density);
     }
 
-    private void createNewsCard(int titleResId, int textResId) {
-        MaterialCardView card = new MaterialCardView(this);
-        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        cardParams.setMargins(0, 0, 0, dpToPx(16));
-        card.setLayoutParams(cardParams);
-        card.setRadius(dpToPx(12));
-        card.setCardElevation(dpToPx(4));
-        card.setCardBackgroundColor(getResources().getColor(android.R.color.white, null));
-        card.setTag("dynamic_card");
-
-        LinearLayout innerLayout = new LinearLayout(this);
-        innerLayout.setOrientation(LinearLayout.VERTICAL);
-        int padding = dpToPx(16);
-        innerLayout.setPadding(padding, padding, padding, padding);
-
-        TextView titleView = new TextView(this);
-        titleView.setText(titleResId);
-        titleView.setTextSize(16);
-        titleView.setTextColor(getResources().getColor(R.color.red_alert, null));
-        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
-        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        titleParams.setMargins(0, 0, 0, dpToPx(8));
-        titleView.setLayoutParams(titleParams);
-
-        TextView textView = new TextView(this);
-        textView.setText(textResId);
-        textView.setTextSize(14);
-        textView.setTextColor(getResources().getColor(android.R.color.black, null));
-        textView.setLineSpacing(0, 1.1f);
-
-        innerLayout.addView(titleView);
-        innerLayout.addView(textView);
-        card.addView(innerLayout);
-
-        alertsContainer.addView(card);
-    }
-
-    private void showNoNewsMessage() {
-        TextView noNews = new TextView(this);
-        noNews.setText("No hay alertas activas en este momento.");
-        noNews.setTextSize(14);
-        noNews.setTextColor(getResources().getColor(android.R.color.darker_gray, null));
-        noNews.setPadding(dpToPx(16), dpToPx(24), dpToPx(16), dpToPx(16));
-        noNews.setTag("dynamic_card");
-        alertsContainer.addView(noNews);
-    }
-
-    private int dpToPx(int dp) {
-        return (int) (dp * getResources().getDisplayMetrics().density);
-    }
-
-    private static class NewsItem {
-        int titleResId;
-        int textResId;
-
-        NewsItem(int titleResId, int textResId) {
-            this.titleResId = titleResId;
-            this.textResId = textResId;
+    // Clase auxiliar para almacenar noticias
+    private static class Noticia {
+        int tituloId, textoId;
+        Noticia(int titulo, int texto) {
+            this.tituloId = titulo;
+            this.textoId = texto;
         }
     }
 }

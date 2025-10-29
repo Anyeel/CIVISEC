@@ -62,11 +62,12 @@
             android:name=".View.FaqActivity"
             android:exported="false" />
 
-        <!-- Receiver para las alarmas -->
+        <!-- Receiver para las notis -->
         <receiver
-            android:name=".Controller.AlertReceiver"
+            android:name=".Controller.AlertManager"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false">
+        </receiver>
 
     </application>
 

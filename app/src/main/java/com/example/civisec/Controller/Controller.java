@@ -7,70 +7,80 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Log;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-
 import com.example.civisec.R;
-import com.example.civisec.View.MainActivity;
-import com.example.civisec.View.MapActivity;
-import com.example.civisec.View.TipsActivity;
-import com.example.civisec.View.FaqActivity;
+import com.example.civisec.View.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Controlador principal que gestiona:
+ * - Navegación entre pantallas
+ * - Fases de la historia
+ * - Notificaciones
+ * - Almacenamiento de datos
+ */
 public class Controller {
-
-    private static final String TAG = "Controller";
-    private static final String PREFS_NAME = "CIVISEC_PREFS";
-    private static final String KEY_CURRENT_PHASE = "CURRENT_PHASE";
-    private static final String KEY_TRIGGERED_NEWS = "TRIGGERED_NEWS";
-    private static final String KEY_DEV_MODE = "DEV_MODE";
-    private static final String CHANNEL_ID = "CIVISEC_ALERTS";
-    private static final String CHANNEL_NAME = "CIVISEC System Alerts";
-    private static final String CHANNEL_DESC = "Notifications for critical CIVISEC alerts";
-    public static final String KEY_GENERATED_SHELTERS = "GENERATED_SHELTERS";
 
     private final Context context;
     private final SharedPreferences prefs;
 
+    // Constantes
+    private static final String PREFS_NAME = "CIVISEC_PREFS";
+    private static final String CHANNEL_ID = "CIVISEC_ALERTS";
+
     public Controller(Context context) {
         this.context = context.getApplicationContext();
         this.prefs = this.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        createNotificationChannel();
+        crearCanalNotificaciones();
     }
 
     // ============ NAVEGACIÓN ============
 
+
+    // Configura la barra de navegación inferior
+
     public void setupBottomNavigation(Activity activity, int currentItemId) {
         BottomNavigationView bottomNav = activity.findViewById(R.id.bottom_navigation);
-        if (bottomNav == null) return;
+        if (bottomNav == null) return; // Comprobación de seguridad
 
+        // 1. Marca el ítem del menú actual como seleccionado
         bottomNav.setSelectedItemId(currentItemId);
-        bottomNav.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == currentItemId) return false;
 
+        // 2. Configura el listener para reaccionar a los clics
+        bottomNav.setOnItemSelectedListener(item -> {
+            // 3. Si el usuario vuelve a pulsar el ítem en el que ya está, no hacemos nada
+            if (item.getItemId() == currentItemId) {
+                return false;
+            }
+
+            // 4. Obtiene el Intent correcto para el ítem pulsado
             Intent intent = getIntentForMenuItem(activity, item.getItemId());
+
+            // 5. Si el Intent es válido, inicia la nueva actividad y cierra la actual
             if (intent != null) {
+                // Estas flags ayudan a gestionar el historial para no apilar actividades
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 activity.startActivity(intent);
+                // Elimina la animación de transición para una sensación más fluida
                 activity.overridePendingTransition(0, 0);
-                activity.finish();
-                return true;
+                activity.finish(); // Cierra la actividad actual
+                return true; // Indica que hemos manejado el evento
             }
-            return false;
+
+            return false; // Indica que no hemos manejado el evento
         });
     }
 
+    /**
+     * Método de ayuda que devuelve el Intent correcto para un ID de menú específico.
+     * @param context El contexto actual.
+     * @param itemId El ID del ítem del menú que se ha pulsado.
+     * @return un Intent para la actividad correspondiente, o null si no se reconoce el ID.
+     */
     private Intent getIntentForMenuItem(Context context, int itemId) {
         if (itemId == R.id.nav_alerts) {
             return new Intent(context, MainActivity.class);
@@ -81,135 +91,116 @@ public class Controller {
         } else if (itemId == R.id.nav_faq) {
             return new Intent(context, FaqActivity.class);
         }
-        return null;
+        return null; // Devuelve null si no se encuentra una coincidencia
     }
 
-    // ============ GESTIÓN DE FASES ============
+    // ============ FASES ============
 
-    public int getCurrentPhase() {
-        return prefs.getInt(KEY_CURRENT_PHASE, 1);
+    // Obtiene la fase actual (1, 2 o 3)
+    public int getFaseActual() {
+        return prefs.getInt("FASE", 1);
     }
 
-    public void saveCurrentPhase(int phase) {
-        prefs.edit().putInt(KEY_CURRENT_PHASE, phase).apply();
-        Log.d(TAG, "Fase guardada: " + phase);
-    }
+    // Avanza a una nueva fase y envía notificación
+    public void avanzarFase(int nuevaFase) {
+        if (nuevaFase <= getFaseActual()) return; // No retroceder
 
-    public void advanceToPhase(int newPhase) {
-        if (newPhase <= getCurrentPhase()) {
-            Log.d(TAG, "No se avanza. Ya estamos en fase " + getCurrentPhase());
-            return;
-        }
+        prefs.edit().putInt("FASE", nuevaFase).apply();
 
-        Log.d(TAG, "Avanzando a fase " + newPhase);
-        saveCurrentPhase(newPhase);
-
-        // Notificar el cambio de fase
-        String title = "";
-        String message = "";
-
-        switch (newPhase) {
-            case 2:
-                title = "⚠️ ALERTA NIVEL 2";
-                message = "Escalada de amenazas detectada. Revise las nuevas directivas.";
-                break;
-            case 3:
-                title = "🚨 DIRECTIVA OBLIGATORIA";
-                message = "El sistema ha sido comprometido. Protocolo de emergencia activado.";
-                break;
-        }
-
-        if (!title.isEmpty()) {
-            sendNotification(title, message);
+        // Notificar cambio de fase
+        if (nuevaFase == 2) {
+            enviarNotificacion("⚠️ ALERTA NIVEL 2",
+                    "Escalada de amenazas detectada. Revise las nuevas directivas.");
+        } else if (nuevaFase == 3) {
+            enviarNotificacion("🚨 DIRECTIVA OBLIGATORIA",
+                    "El sistema ha sido comprometido. Protocolo de emergencia activado.");
         }
     }
 
-    // ============ GESTIÓN DE NOTICIAS ============
+    // ============ NOTICIAS ============
 
-    public void triggerNewsAlert(int titleResId, int textResId) {
-        // Guardar noticia
-        Set<String> news = new HashSet<>(prefs.getStringSet(KEY_TRIGGERED_NEWS, new HashSet<>()));
-        news.add(titleResId + "|" + textResId);
-        prefs.edit().putStringSet(KEY_TRIGGERED_NEWS, news).apply();
+
+     // Guarda una noticia activada y envía notificación
+    public void activarNoticia(int tituloId, int textoId) {
+        // Guardar en preferencias
+        Set<String> noticias = getNoticias();
+        noticias.add(tituloId + "|" + textoId);
+        prefs.edit().putStringSet("NOTICIAS", noticias).apply();
 
         // Enviar notificación
-        String title = context.getString(titleResId);
-        String text = context.getString(textResId);
-        sendNotification(title, text);
-
-        Log.d(TAG, "Noticia activada: " + title);
+        String titulo = context.getString(tituloId);
+        String texto = context.getString(textoId);
+        enviarNotificacion(titulo, texto);
     }
 
-    public Set<String> getTriggeredNews() {
-        return new HashSet<>(prefs.getStringSet(KEY_TRIGGERED_NEWS, new HashSet<>()));
+    // Obtiene todas las noticias activadas
+    public Set<String> getNoticias() {
+        return new HashSet<>(prefs.getStringSet("NOTICIAS", new HashSet<>()));
     }
 
     // ============ NOTIFICACIONES ============
 
-    private void createNotificationChannel() {
+    // Crea el canal de notificaciones (necesario en Android 8+)
+    private void crearCanalNotificaciones() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    CHANNEL_NAME,
+                    "Alertas CIVISEC",
                     NotificationManager.IMPORTANCE_HIGH
             );
-            channel.setDescription(CHANNEL_DESC);
             NotificationManager manager = context.getSystemService(NotificationManager.class);
-            if (manager != null) {
-                manager.createNotificationChannel(channel);
-            }
+            if (manager != null) manager.createNotificationChannel(channel);
         }
     }
 
-    private void sendNotification(String title, String message) {
-        if (ContextCompat.checkSelfPermission(context,
-                android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            Log.w(TAG, "Sin permiso de notificaciones");
-            return;
-        }
-
+    // Envía una notificación al usuario
+    public void enviarNotificacion(String titulo, String mensaje) {
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
+                context, 0, intent, PendingIntent.FLAG_IMMUTABLE
         );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_civisec_logo)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentTitle(titulo)
+                .setContentText(mensaje)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(mensaje))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        NotificationManagerCompat.from(context).notify((int) System.currentTimeMillis(), builder.build());
+        var notificationManager = context.getSystemService(NotificationManager.class);
+        if (notificationManager != null) {
+            notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        }
     }
 
-    /**
-     * Envía una notificación personalizada (para alerta de Bluetooth)
-     */
-    public void sendCustomNotification(String title, String message) {
-        sendNotification(title, message);
+    // ============ REFUGIOS (MAPA) ============
+
+    // Guarda las ubicaciones de los refugios
+    public void guardarRefugios(Set<String> ubicaciones) {
+        prefs.edit().putStringSet("REFUGIOS", ubicaciones).apply();
     }
 
-    public void saveShelterLocations(Set<String> shelterLocations) {
-        prefs.edit().putStringSet(KEY_GENERATED_SHELTERS, shelterLocations).apply();
-    }
-
-    public Set<String> getShelterLocations() {
-        return prefs.getStringSet(KEY_GENERATED_SHELTERS, new HashSet<>());
+    // Obtiene las ubicaciones guardadas de los refugios */
+    public Set<String> getRefugios() {
+        return prefs.getStringSet("REFUGIOS", new HashSet<>());
     }
 
     // ============ MODO DESARROLLADOR ============
-    public void setDevMode(boolean enabled) { prefs.edit().putBoolean(KEY_DEV_MODE, enabled).apply(); }
-    public void toggleDevMode() { setDevMode(!isDevMode()); }
-    public void resetApp() { prefs.edit().clear().apply(); }
-    public boolean isDevMode() {
-        return prefs.getBoolean(KEY_DEV_MODE, false);
+
+    // Activa/desactiva el modo desarrollo (eventos cada 3 seg vs 1 min)
+    public void setModoDesarrollo(boolean activar) {
+        prefs.edit().putBoolean("DEV_MODE", activar).apply();
     }
 
+    // Verifica si el modo desarrollo está activo
+    public boolean isModoDesarrollo() {
+        return prefs.getBoolean("DEV_MODE", false);
+    }
 
+    // Reinicia completamente la app (borra todos los datos)
+    public void reiniciarApp() {
+        prefs.edit().clear().apply();
+    }
 }

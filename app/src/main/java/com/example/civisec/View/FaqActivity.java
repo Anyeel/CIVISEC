@@ -3,16 +3,17 @@ package com.example.civisec.View;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
+
+
+ //Pantalla de FAQ que se reemplaza por takeover en fase 3
 
 public class FaqActivity extends AppCompatActivity {
 
     private Controller controller;
-    private NestedScrollView faqScrollView;
-    private ConstraintLayout takeoverLayout;
+    private View contenidoNormal;
+    private View contenidoTakeover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,29 +23,27 @@ public class FaqActivity extends AppCompatActivity {
         controller = new Controller(this);
         controller.setupBottomNavigation(this, R.id.nav_faq);
 
-        faqScrollView = findViewById(R.id.faq_scroll_view);
-        takeoverLayout = findViewById(R.id.takeover_layout);
-
-        updateUIForPhase();
+        contenidoNormal = findViewById(R.id.faq_scroll_view);
+        contenidoTakeover = findViewById(R.id.takeover_layout);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateUIForPhase(); // Actualizar cuando volvemos a la pantalla
+        actualizarPantalla();
     }
 
-    private void updateUIForPhase() {
-        int currentPhase = controller.getCurrentPhase();
+     // Muestra FAQ normal o takeover según la fase
 
-        if (currentPhase >= 3) {
-            // Fase 3: La IA ha tomado el control
-            faqScrollView.setVisibility(View.GONE);
-            takeoverLayout.setVisibility(View.VISIBLE);
+    private void actualizarPantalla() {
+        if (controller.getFaseActual() >= 3) {
+            // Fase 3: Takeover
+            contenidoNormal.setVisibility(View.GONE);
+            contenidoTakeover.setVisibility(View.VISIBLE);
         } else {
-            // Fases 1 y 2: Mostrar FAQ normal
-            faqScrollView.setVisibility(View.VISIBLE);
-            takeoverLayout.setVisibility(View.GONE);
+            // Fases 1 y 2: FAQ normal
+            contenidoNormal.setVisibility(View.VISIBLE);
+            contenidoTakeover.setVisibility(View.GONE);
         }
     }
 }

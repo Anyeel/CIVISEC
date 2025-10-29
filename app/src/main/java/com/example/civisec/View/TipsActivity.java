@@ -2,19 +2,21 @@ package com.example.civisec.View;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.NestedScrollView;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
+
+
+ // Pantalla de consejos que cambia según la fase
 
 public class TipsActivity extends AppCompatActivity {
 
     private Controller controller;
-    private NestedScrollView tipsScrollView;
-    private LinearLayout tipsTakeoverLayout;
-    private TextView tip1Title, tip1Text, tip2Title, tip2Text, tip3Title, tip3Text, tip4Title, tip4Text;
+    private View contenidoNormal;
+    private View contenidoTakeover;
+    private TextView[] titulos = new TextView[4];
+    private TextView[] textos = new TextView[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,68 +26,71 @@ public class TipsActivity extends AppCompatActivity {
         controller = new Controller(this);
         controller.setupBottomNavigation(this, R.id.nav_tips);
 
-        initializeViews();
-        updateUIForPhase();
+        // Obtener vistas
+        contenidoNormal = findViewById(R.id.scroll_view);
+        contenidoTakeover = findViewById(R.id.tips_takeover_layout);
+
+        // Obtener TextViews de consejos
+        titulos[0] = findViewById(R.id.tip1_title);
+        textos[0] = findViewById(R.id.tip1_text);
+        titulos[1] = findViewById(R.id.tip2_title);
+        textos[1] = findViewById(R.id.tip2_text);
+        titulos[2] = findViewById(R.id.tip3_title);
+        textos[2] = findViewById(R.id.tip3_text);
+        titulos[3] = findViewById(R.id.tip4_title);
+        textos[3] = findViewById(R.id.tip4_text);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateUIForPhase(); // Actualizar cuando volvemos a la pantalla
+        actualizarPantalla();
     }
 
-    private void initializeViews() {
-        tipsScrollView = findViewById(R.id.scroll_view);
-        tipsTakeoverLayout = findViewById(R.id.tips_takeover_layout);
-        tip1Title = findViewById(R.id.tip1_title);
-        tip1Text = findViewById(R.id.tip1_text);
-        tip2Title = findViewById(R.id.tip2_title);
-        tip2Text = findViewById(R.id.tip2_text);
-        tip3Title = findViewById(R.id.tip3_title);
-        tip3Text = findViewById(R.id.tip3_text);
-        tip4Title = findViewById(R.id.tip4_title);
-        tip4Text = findViewById(R.id.tip4_text);
-    }
 
-    private void updateUIForPhase() {
-        int currentPhase = controller.getCurrentPhase();
+    // Actualiza la pantalla según la fase actual
 
-        if (currentPhase >= 3) {
-            // Fase 3: Mostrar takeover de la IA
-            tipsScrollView.setVisibility(View.GONE);
-            tipsTakeoverLayout.setVisibility(View.VISIBLE);
+    private void actualizarPantalla() {
+        int fase = controller.getFaseActual();
+
+        if (fase >= 3) {
+            // Fase 3: Mostrar pantalla de takeover
+            contenidoNormal.setVisibility(View.GONE);
+            contenidoTakeover.setVisibility(View.VISIBLE);
         } else {
             // Fases 1 y 2: Mostrar consejos normales
-            tipsScrollView.setVisibility(View.VISIBLE);
-            tipsTakeoverLayout.setVisibility(View.GONE);
+            contenidoNormal.setVisibility(View.VISIBLE);
+            contenidoTakeover.setVisibility(View.GONE);
 
-            if (currentPhase == 1) {
-                setPhase1Tips();
+            if (fase == 1) {
+                mostrarConsejosFase1();
             } else {
-                setPhase2Tips();
+                mostrarConsejosFase2();
             }
         }
     }
 
-    private void setPhase1Tips() {
-        tip1Title.setText(R.string.tip1_title_phase1);
-        tip1Text.setText(R.string.tip1_text_phase1);
-        tip2Title.setText(R.string.tip2_title_phase1);
-        tip2Text.setText(R.string.tip2_text_phase1);
-        tip3Title.setText(R.string.tip3_title_phase1);
-        tip3Text.setText(R.string.tip3_text_phase1);
-        tip4Title.setText(R.string.tip4_title_phase1);
-        tip4Text.setText(R.string.tip4_text_phase1);
+    //Muestra los consejos de la fase 1
+    private void mostrarConsejosFase1() {
+        titulos[0].setText(R.string.tip1_title_phase1);
+        textos[0].setText(R.string.tip1_text_phase1);
+        titulos[1].setText(R.string.tip2_title_phase1);
+        textos[1].setText(R.string.tip2_text_phase1);
+        titulos[2].setText(R.string.tip3_title_phase1);
+        textos[2].setText(R.string.tip3_text_phase1);
+        titulos[3].setText(R.string.tip4_title_phase1);
+        textos[3].setText(R.string.tip4_text_phase1);
     }
 
-    private void setPhase2Tips() {
-        tip1Title.setText(R.string.tip1_title_phase2);
-        tip1Text.setText(R.string.tip1_text_phase2);
-        tip2Title.setText(R.string.tip2_title_phase2);
-        tip2Text.setText(R.string.tip2_text_phase2);
-        tip3Title.setText(R.string.tip3_title_phase2);
-        tip3Text.setText(R.string.tip3_text_phase2);
-        tip4Title.setText(R.string.tip4_title_phase2);
-        tip4Text.setText(R.string.tip4_text_phase2);
+    //Muestra los consejos de la fase 2
+    private void mostrarConsejosFase2() {
+        titulos[0].setText(R.string.tip1_title_phase2);
+        textos[0].setText(R.string.tip1_text_phase2);
+        titulos[1].setText(R.string.tip2_title_phase2);
+        textos[1].setText(R.string.tip2_text_phase2);
+        titulos[2].setText(R.string.tip3_title_phase2);
+        textos[2].setText(R.string.tip3_text_phase2);
+        titulos[3].setText(R.string.tip4_title_phase2);
+        textos[3].setText(R.string.tip4_text_phase2);
     }
 }

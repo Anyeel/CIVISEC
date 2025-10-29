@@ -2,122 +2,120 @@ package com.example.civisec.View;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import com.example.civisec.Controller.AlertScheduler;
+import com.example.civisec.Controller.AlertManager;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 import java.util.ArrayList;
 
+
+// Pantalla inicial de la app con controles de desarrollador
+
 public class SplashActivity extends AppCompatActivity {
 
-    private static final String TAG = "SplashActivity";
     private Controller controller;
-    private AlertScheduler alertScheduler;
+    private Button botonUsuario, botonDev, botonReset;
 
-    private Button userModeButton;
-    private Button devModeButton;
-
-    private final ActivityResultLauncher<String[]> requestPermissionsLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
-                Log.d(TAG, "Permisos respondidos, navegando a MainActivity");
-                startMainActivity();
-            });
+    // Lanzador de solicitud de permisos
+    private final ActivityResultLauncher<String[]> solicitarPermisos =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                    resultado -> irAMainActivity());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        alertScheduler = new AlertScheduler();
         controller = new Controller(this);
-        Button enterButton = findViewById(R.id.enter_button);
-        enterButton.setOnClickListener(v -> checkAndRequestPermissions());
 
-        addDevButtons();
+        // Botón principal de entrada
+        Button botonEntrar = findViewById(R.id.enter_button);
+        botonEntrar.setOnClickListener(v -> verificarPermisos());
+
+        // Botones de desarrollador
+        configurarBotonesDesarrollador();
     }
 
-    private void addDevButtons() {
-        userModeButton = findViewById(R.id.user_mode_button);
-        devModeButton = findViewById(R.id.dev_mode_button);
-        Button resetButton = findViewById(R.id.reset_button);
+     // Configura los botones de modo desarrollo
+    private void configurarBotonesDesarrollador() {
+        botonUsuario = findViewById(R.id.user_mode_button);
+        botonDev = findViewById(R.id.dev_mode_button);
+        botonReset = findViewById(R.id.reset_button);
 
-        userModeButton.setOnClickListener(v -> {
-            controller.setDevMode(false);
-            updateModeButtons();
-            Toast.makeText(this, "Modo NORMAL activado: 1 min/unidad", Toast.LENGTH_SHORT).show();
+        // Modo Usuario (1 minuto por evento)
+        botonUsuario.setOnClickListener(v -> {
+            controller.setModoDesarrollo(false);
+            actualizarBotones();
+            Toast.makeText(this, "Modo NORMAL: 1 min/evento", Toast.LENGTH_SHORT).show();
         });
 
-        devModeButton.setOnClickListener(v -> {
-            controller.setDevMode(true);
-            updateModeButtons();
-            Toast.makeText(this, "Modo DEV activado: 3 seg/unidad", Toast.LENGTH_SHORT).show();
+        // Modo Desarrollo (3 segundos por evento)
+        botonDev.setOnClickListener(v -> {
+            controller.setModoDesarrollo(true);
+            actualizarBotones();
+            Toast.makeText(this, "Modo DEV: 3 seg/evento", Toast.LENGTH_SHORT).show();
         });
 
-        resetButton.setBackgroundColor(getResources().getColor(R.color.red_alert));
-        resetButton.setTextColor(getResources().getColor(android.R.color.white));
-        resetButton.setOnClickListener(v -> {
-            controller.resetApp();
-            alertScheduler.resetSchedule(this);
-            Toast.makeText(this, "RESET COMPLETO. Reinicia la app para reprogramar la historia.", Toast.LENGTH_LONG).show();
+        // Reset completo
+        botonReset.setOnClickListener(v -> {
+            controller.reiniciarApp();
+            new AlertManager().reiniciar(this);
+            Toast.makeText(this, "RESET COMPLETO. Reinicia la app.", Toast.LENGTH_LONG).show();
             finish();
         });
 
-        updateModeButtons();
+        actualizarBotones();
     }
 
-    private void updateModeButtons() {
-        boolean isDevMode = controller.isDevMode();
-        if (isDevMode) {
-            devModeButton.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_dark));
-            devModeButton.setTextColor(getResources().getColor(android.R.color.white));
-            userModeButton.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-            userModeButton.setTextColor(getResources().getColor(android.R.color.white));
+     // Actualiza el color de los botones según el modo activo
+
+    private void actualizarBotones() {
+        if (controller.isModoDesarrollo()) {
+            // Modo desarrollo activo
+            botonDev.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_dark));
+            botonUsuario.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
         } else {
-            userModeButton.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-            userModeButton.setTextColor(getResources().getColor(android.R.color.white));
-            devModeButton.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-            devModeButton.setTextColor(getResources().getColor(android.R.color.white));
+            // Modo usuario activo
+            botonUsuario.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            botonDev.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
         }
     }
 
-    private void checkAndRequestPermissions() {
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
+     // Verifica y solicita los permisos necesarios
 
+    private void verificarPermisos() {
+        ArrayList<String> permisosFaltantes = new ArrayList<>();
+
+        // Bluetooth (Android 12+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                permissionsToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
-            }
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            permisosFaltantes.add(Manifest.permission.BLUETOOTH_CONNECT);
         }
 
-        if (permissionsToRequest.isEmpty()) {
-            Log.d(TAG, "Todos los permisos concedidos");
-            startMainActivity();
+        // Notificaciones (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permisosFaltantes.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+
+        // Ubicación
+        permisosFaltantes.add(Manifest.permission.ACCESS_FINE_LOCATION);
+
+        // Solicitar permisos o ir directamente a MainActivity
+        if (permisosFaltantes.isEmpty()) {
+            irAMainActivity();
         } else {
-            Log.d(TAG, "Solicitando permisos: " + permissionsToRequest);
-            requestPermissionsLauncher.launch(permissionsToRequest.toArray(new String[0]));
+            solicitarPermisos.launch(permisosFaltantes.toArray(new String[0]));
         }
     }
 
-    private void startMainActivity() {
-        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-        startActivity(intent);
+    // Navega a la pantalla principal
+    private void irAMainActivity() {
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }
