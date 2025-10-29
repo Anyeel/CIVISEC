@@ -26,6 +26,8 @@ public class AlertReceiver extends BroadcastReceiver {
             handleNewsAlert(context, controller, intent);
         } else if ("PHASE_ADVANCE".equals(action)) {
             handlePhaseAdvance(context, controller, intent);
+        } else if ("BLUETOOTH_ALERT".equals(action)) {
+            handleBluetoothAlert(context, controller);
         }
     }
 
@@ -50,5 +52,15 @@ public class AlertReceiver extends BroadcastReceiver {
         } else {
             Log.w(TAG, "Fase inválida: " + targetPhase);
         }
+    }
+
+    private void handleBluetoothAlert(Context context, Controller controller) {
+        BluetoothScanner scanner = new BluetoothScanner(context);
+        String alertMessage = scanner.getHostileDeviceAlert();
+
+        // Enviar notificación personalizada
+        controller.sendCustomNotification("⚠️ AMENAZA DETECTADA", alertMessage);
+
+        Log.d(TAG, "Alerta Bluetooth enviada");
     }
 }

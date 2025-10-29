@@ -16,11 +16,9 @@ public class AlertScheduler {
     private static final String PREFS_NAME = "CIVISEC_PREFS";
     private static final String KEY_STORY_SCHEDULED = "STORY_SCHEDULED";
 
-    // Configuración de tiempo (cambiar según necesidad)
-    private static final boolean USE_TEST_TIMES = true; // false para producción
-    // PRUEBAS RÁPIDAS: 1 unidad = 3 segundos
-    // PRODUCCIÓN: 1 unidad = 1 minuto
-    private static final long TIME_UNIT = USE_TEST_TIMES ? 3000 : 60 * 1000;
+    // Tiempos configurables
+    private static final long DEV_TIME_UNIT = 3000;      // 3 segundos para desarrollo
+    private static final long PROD_TIME_UNIT = 60 * 1000; // 1 minuto para producción
 
     public void scheduleStoryEvents(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -30,7 +28,13 @@ public class AlertScheduler {
             return;
         }
 
-        Log.d(TAG, "Programando historia completa");
+        // Obtener el modo actual (dev o producción)
+        Controller controller = new Controller(context);
+        boolean isDevMode = controller.isDevMode();
+        long TIME_UNIT = isDevMode ? DEV_TIME_UNIT : PROD_TIME_UNIT;
+
+        Log.d(TAG, "Programando historia en modo: " + (isDevMode ? "DESARROLLO" : "PRODUCCIÓN"));
+        Log.d(TAG, "Unidad de tiempo: " + (TIME_UNIT / 1000) + " segundos");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         if (alarmManager == null) {
@@ -103,6 +107,9 @@ public class AlertScheduler {
         scheduleNewsAlert(context, alarmManager, 32 * TIME_UNIT, 301,
                 R.string.phase3_alert1_title, R.string.phase3_alert1_text);
 
+        // ALERTA ESPECIAL: Dispositivo Bluetooth detectado
+        scheduleBluetoothAlert(context, alarmManager, 34 * TIME_UNIT, 305);
+
         scheduleNewsAlert(context, alarmManager, 35 * TIME_UNIT, 302,
                 R.string.phase3_alert4_title, R.string.phase3_alert4_text);
 
@@ -118,6 +125,9 @@ public class AlertScheduler {
 
     private void scheduleNewsAlert(Context context, AlarmManager alarmManager,
                                    long delay, int requestCode, int titleId, int textId) {
+        Controller controller = new Controller(context);
+        long TIME_UNIT = controller.isDevMode() ? DEV_TIME_UNIT : PROD_TIME_UNIT;
+
         Intent intent = new Intent(context, AlertReceiver.class);
         intent.setAction("NEWS_ALERT");
         intent.putExtra("TITLE_ID", titleId);
@@ -155,6 +165,9 @@ public class AlertScheduler {
 
     private void schedulePhaseAdvance(Context context, AlarmManager alarmManager,
                                       long delay, int targetPhase) {
+        Controller controller = new Controller(context);
+        long TIME_UNIT = controller.isDevMode() ? DEV_TIME_UNIT : PROD_TIME_UNIT;
+
         Intent intent = new Intent(context, AlertReceiver.class);
         intent.setAction("PHASE_ADVANCE");
         intent.putExtra("TARGET_PHASE", targetPhase);
@@ -185,6 +198,36 @@ public class AlertScheduler {
         } catch (SecurityException e) {
             Log.e(TAG, "No se pudo programar avance de fase: " + e.getMessage());
             // Fallback a alarma inexacta
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pIntent);
+        }
+    }
+
+    private void scheduleBluetoothAlert(Context context, AlarmManager alarmManager, long delay, int requestCode) {
+        Intent intent = new Intent(context, AlertReceiver.class);
+        intent.setAction("BLUETOOTH_ALERT");
+
+        PendingIntent pIntent = PendingIntent.getBroadcast(
+                context,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        long triggerTime = SystemClock.elapsedRealtime() + delay;
+
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pIntent);
+                } else {
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pIntent);
+                }
+            } else {
+                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pIntent);
+            }
+            Log.d(TAG, "Alerta Bluetooth programada: " + requestCode);
+        } catch (SecurityException e) {
+            Log.e(TAG, "Error al programar alerta Bluetooth: " + e.getMessage());
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, pIntent);
         }
     }

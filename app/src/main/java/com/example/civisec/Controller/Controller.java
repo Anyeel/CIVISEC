@@ -34,6 +34,7 @@ public class Controller {
     private static final String PREFS_NAME = "CIVISEC_PREFS";
     private static final String KEY_CURRENT_PHASE = "CURRENT_PHASE";
     private static final String KEY_TRIGGERED_NEWS = "TRIGGERED_NEWS";
+    private static final String KEY_DEV_MODE = "DEV_MODE"; // NUEVO: Modo desarrollador
     private static final String CHANNEL_ID = "CIVISEC_ALERTS";
     private static final String CHANNEL_NAME = "CIVISEC System Alerts";
     private static final String CHANNEL_DESC = "Notifications for critical CIVISEC alerts";
@@ -186,10 +187,18 @@ public class Controller {
         NotificationManagerCompat.from(context).notify((int) System.currentTimeMillis(), builder.build());
     }
 
-    // ============ UTILIDADES ============
+    /**
+     * Envía una notificación personalizada (para alerta de Bluetooth)
+     */
+    public void sendCustomNotification(String title, String message) {
+        sendNotification(title, message);
+    }
 
-    public void resetApp() {
-        prefs.edit().clear().apply();
-        Log.d(TAG, "App reseteada");
+    // ============ MODO DESARROLLADOR ============
+    public void setDevMode(boolean enabled) { prefs.edit().putBoolean(KEY_DEV_MODE, enabled).apply(); }
+    public void toggleDevMode() { setDevMode(!isDevMode()); }
+    public void resetApp() { prefs.edit().clear().apply(); }
+    public boolean isDevMode() {
+        return prefs.getBoolean(KEY_DEV_MODE, false);
     }
 }

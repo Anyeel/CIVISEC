@@ -5,65 +5,107 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
     tools:context=".View.SplashActivity">
 
+    <!-- Fondo -->
     <ImageView
         android:id="@+id/warning_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="1"
         android:scaleType="centerCrop"
         android:src="@drawable/warning_tape_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:alpha="0.6"/>
 
+    <!-- Título de la App -->
     <TextView
         android:id="@+id/title_civised"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CIVISEC"
         android:textColor="@android:color/white"
-        android:textSize="60sp"
+        android:textSize="48sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/logo_civisec"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Logo -->
+
+    <!-- Botón de Entrar -->
+    <ImageView
+        android:id="@+id/logo_civisec"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_civisec_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/warning_background"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654" />
 
     <Button
         android:id="@+id/enter_button"
-        android:layout_width="250dp"
-        android:layout_height="55dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/orange"
         android:text="Entrar"
-        android:textColor="@color/black"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:cornerRadius="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dev_button_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.828" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/logo_civisec"
-        android:layout_width="170dp"
-        android:layout_height="157dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/enter_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+    <!-- Contenedor para los botones de desarrollador -->
+    <LinearLayout
+        android:id="@+id/dev_button_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_civised"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_civisec_logo" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Contenedor horizontal para los botones de modo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/user_mode_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="👤 MODO USUARIO"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/dev_mode_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="👨‍💻 MODO DEV"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+        <!-- Botón de Reset -->
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reiniciar historia" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
