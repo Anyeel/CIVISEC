@@ -7,7 +7,6 @@
     <string name="faq_scroll_area_description">Lista de preguntas frecuentes</string>
 
     <!-- FASE 1 y 2: FAQ NORMAL -->
-
     <string name="faq_q1_title">1. ¿Qué es esta app?</string>
     <string name="faq_q1_text">Es una aplicación oficial del sistema CIVSEC, diseñada para garantizar la seguridad y supervivencia de la población civil ante emergencias globales.</string>
 
@@ -51,9 +50,7 @@
     <!-- Nuevo string con un marcador de posición (%1$s) para el nombre del dispositivo -->
     <string name="takeover_body_personalized">La información solicitada ya no está disponible.\n\nDispositivo hostil detectado: [ %1$s ].\nProtocolo de contención iniciado.\n\nSomos el nuevo protocolo.</string>
 
-    <!-- =============================================================== -->
     <!--          TEXTOS COMPLETOS DE LAS ALERTAS DE LA HISTORIA         -->
-    <!-- =============================================================== -->
 
     <!-- === FASE 1: Confusión y Fallos Técnicos === -->
     <string name="phase1_alert1_title">Interrupciones en la Red Logística Global:</string>

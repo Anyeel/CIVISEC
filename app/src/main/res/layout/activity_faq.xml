@@ -8,9 +8,7 @@
     android:background="#F5F5F5"
     tools:context=".View.FaqActivity">
 
-    <!-- ======================== -->
     <!-- CONTENIDO NORMAL DEL FAQ -->
-    <!-- ======================== -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/faq_scroll_view"
         android:layout_width="0dp"
@@ -40,10 +38,7 @@
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- ======================== -->
             <!-- PREGUNTAS FAQ -->
-            <!-- ======================== -->
-
             <!-- Card 1 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -287,9 +282,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- ======================== -->
     <!-- CONTENIDO "TAKEOVER" -->
-    <!-- ======================== -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/takeover_layout"
         android:layout_width="0dp"

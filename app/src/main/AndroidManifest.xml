@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos necesarios -->
+    <!-- Permisos -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
@@ -28,12 +28,12 @@
         android:theme="@style/Theme.CIVISEC"
         tools:targetApi="31">
 
-        <!-- IMPORTANTE: Añade tu API Key de Google Maps aquí -->
+        <!-- Añadir API Key de Google Maps aquí -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="TU_API_KEY_AQUI" />
 
-        <!-- Activity principal (Splash) -->
+        <!-- Activity principal -->
         <activity
             android:name=".View.SplashActivity"
             android:exported="true"

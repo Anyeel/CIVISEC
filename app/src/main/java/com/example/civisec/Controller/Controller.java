@@ -34,7 +34,7 @@ public class Controller {
     private static final String PREFS_NAME = "CIVISEC_PREFS";
     private static final String KEY_CURRENT_PHASE = "CURRENT_PHASE";
     private static final String KEY_TRIGGERED_NEWS = "TRIGGERED_NEWS";
-    private static final String KEY_DEV_MODE = "DEV_MODE"; // NUEVO: Modo desarrollador
+    private static final String KEY_DEV_MODE = "DEV_MODE";
     private static final String CHANNEL_ID = "CIVISEC_ALERTS";
     private static final String CHANNEL_NAME = "CIVISEC System Alerts";
     private static final String CHANNEL_DESC = "Notifications for critical CIVISEC alerts";
