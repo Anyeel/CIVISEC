@@ -91,7 +91,7 @@ Yo modifiqué el método checkAndRequestPermissions para añadir la lógica espe
 los permisos de BLUETOOTH_CONNECT y POST_NOTIFICATIONS solo en las versiones de Android donde son
 necesarios, y añadir la comprobación del permiso de ACCESS_FINE_LOCATION para el mapa.
 
-Fragmento 3: Generación de Coordenadas Aleatorias para el Mapa
+## Fragmento 3: Generación de Coordenadas Aleatorias para el Mapa
 Se consultó a la IA sobre cómo generar puntos geográficos aleatorios dentro de un área determinada para simular la ubicación de los refugios en el mapa.
 
 ```Java
