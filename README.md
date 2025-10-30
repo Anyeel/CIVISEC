@@ -41,47 +41,6 @@ Mockups: Ver diseño completo en [Figma](https://www.figma.com/design/gc1FMTqOT7
 
 Diagramas: incluidos en formato .png y .drawio en la carpeta /Diagramas.
 
-## Requisitos y apuntes
-
-Aplicación que simula al gobierno
-Simula un apocalipsis
-Notifica al usuario
-El problema empora con el paso del tiempo
-
-Usa ubicación o cualquier hardware del dispositivo, 2 idealmente
-Notificación en segundo plano/cerrada
-
-Boton de desarrollador
-
-2 Apks, una para usuario y otra para desarrollador
-Boton de desarrollo permite lanzar notificaciones o que avance la historia
-
-Hardware:
-- Vibración
-- Linterna
-- **GPS** : Api: en google maps platform, además tenemos un repo para saber como hacer el mapa. SDK google maps
-- **Bluethoot**
-- WiFi
-- Acelerómetro
-- Giroscopio
-- EMF
-- Cámara
-- NFC
-- QR
-- Batería
-- Verficiación biométrica
-- Cobertura
-- Nearby
-
-Notifiaciones:
-- Texto.
-- Aplicación cerrada o segundo plano.
-- Cuando la pulso me lleve al apartado.
-
-Ideas:
-inputstream
-borrar los archivos que vaya imprimiendo, ordenarlo por carpetas y cuando se terminen, pasas de fase.
-
 ## Objetivo del proyecto
 
 El propósito principal es crear una experiencia inmersiva, narrativa y visualmente atractiva para Halloween, utilizando elementos de horror psicológico y simulación realista. La app está pensada como una sátira tecnológica que combina diseño de interfaz, narrativa interactiva y programación móvil para ofrecer una historia envolvente en tiempo real.
