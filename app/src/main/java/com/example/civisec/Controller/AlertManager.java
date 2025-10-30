@@ -59,7 +59,7 @@ public class AlertManager extends BroadcastReceiver {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         //NOTIFICACIÓN INICIAL DE BIENVENIDA
-        programarNoticia(context, alarmManager, 1, 100,
+        programarNoticia(context, alarmManager, 1, 1,
                 R.string.welcome_notification_title, R.string.welcome_notification_text);
 
         // FASE 1

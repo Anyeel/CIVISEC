@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 
-
- //Pantalla de FAQ que se reemplaza por takeover en fase 3
-
 public class FaqActivity extends AppCompatActivity {
 
     private Controller controller;

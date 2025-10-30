@@ -14,9 +14,6 @@ import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 import java.util.ArrayList;
 
-
-// Pantalla inicial de la app con controles de desarrollador
-
 public class SplashActivity extends AppCompatActivity {
 
     private Controller controller;
@@ -88,7 +85,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
      // Verifica y solicita los permisos necesarios
-
     private void verificarPermisos() {
         ArrayList<String> permisosFaltantes = new ArrayList<>();
 

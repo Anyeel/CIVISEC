@@ -18,7 +18,6 @@ import org.osmdroid.config.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
- // Pantalla principal que muestra las noticias/alertas
 public class MainActivity extends AppCompatActivity {
 
     private Controller controller;

@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 
-
- // Pantalla de consejos que cambia según la fase
-
 public class TipsActivity extends AppCompatActivity {
 
     private Controller controller;
@@ -47,9 +44,7 @@ public class TipsActivity extends AppCompatActivity {
         actualizarPantalla();
     }
 
-
     // Actualiza la pantalla según la fase actual
-
     private void actualizarPantalla() {
         int fase = controller.getFaseActual();
 

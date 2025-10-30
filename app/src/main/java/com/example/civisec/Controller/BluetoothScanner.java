@@ -24,8 +24,8 @@ public class BluetoothScanner {
     }
 
 
-     // Genera un mensaje de alerta usando un dispositivo Bluetooth aleatorio
-     // Si no hay dispositivos, usa un mensaje genérico
+    // Genera un mensaje de alerta usando un dispositivo Bluetooth aleatorio
+    // Si no hay dispositivos, usa un mensaje genérico
     public String getMensajeAlerta() {
         List<String> dispositivos = getDispositivosEmparejados();
 
@@ -48,7 +48,10 @@ public class BluetoothScanner {
     // Obtiene la lista de nombres de dispositivos Bluetooth emparejados
     private List<String> getDispositivosEmparejados() {
         List<String> nombres = new ArrayList<>();
-        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)) {
+
+        // CORRECCIÓN: La comparación debe ser == PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)
+                == PackageManager.PERMISSION_GRANTED) {
             try {
                 BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
 
@@ -59,7 +62,7 @@ public class BluetoothScanner {
 
                 // Obtener dispositivos emparejados
                 var paired = bluetooth.getBondedDevices();
-                if (paired != null) {
+                if (paired != null && !paired.isEmpty()) {
                     for (BluetoothDevice device : paired) {
                         String nombre = device.getName();
                         if (nombre != null && !nombre.isEmpty()) {
@@ -69,6 +72,7 @@ public class BluetoothScanner {
                 }
             } catch (Exception e) {
                 // Si hay algún error, devolvemos lista vacía
+                e.printStackTrace(); // Para debug, puedes ver el error en logcat
             }
         }
         return nombres;

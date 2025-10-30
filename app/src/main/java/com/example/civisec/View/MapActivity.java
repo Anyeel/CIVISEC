@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.civisec.Controller.AlertManager;
 import com.example.civisec.Controller.Controller;
 import com.example.civisec.R;
 import com.google.android.gms.location.LocationServices;
@@ -22,8 +23,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
- //Pantalla del mapa que muestra refugios
 
 public class MapActivity extends AppCompatActivity {
 
@@ -46,7 +45,6 @@ public class MapActivity extends AppCompatActivity {
 
         centrarMapa();
     }
-
 
     // Centra el mapa en la ubicación del usuario
     private void centrarMapa() {
@@ -81,7 +79,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-     // Gestiona los refugios: los genera si no existen, o los carga
+    // Gestiona los refugios: los genera si no existen, o los carga
     private void gestionarRefugios(GeoPoint centro) {
         Set<String> refugiosGuardados = controller.getRefugios();
 
@@ -95,7 +93,7 @@ public class MapActivity extends AppCompatActivity {
         mostrarRefugios(refugiosGuardados);
     }
 
-     //Genera 7 ubicaciones aleatorias alrededor del centro
+    //Genera 7 ubicaciones aleatorias alrededor del centro
     private Set<String> generarRefugios(GeoPoint centro) {
         Set<String> ubicaciones = new HashSet<>();
         Random random = new Random();
@@ -149,7 +147,7 @@ public class MapActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mapa.onResume();
-        // NUEVO: Asegurarse de que el seguimiento de la ubicación se reanuda
+        // Asegurarse de que el seguimiento de la ubicación se reanuda
         if (locationOverlay != null) {
             locationOverlay.enableMyLocation();
         }
@@ -159,7 +157,7 @@ public class MapActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mapa.onPause();
-        // NUEVO: Asegurarse de que el seguimiento se pausa para ahorrar batería
+        // Asegurarse de que el seguimiento se pausa para ahorrar batería
         if (locationOverlay != null) {
             locationOverlay.disableMyLocation();
         }
