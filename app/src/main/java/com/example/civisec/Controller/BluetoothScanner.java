@@ -29,14 +29,14 @@ public class BluetoothScanner {
     public String getMensajeAlerta() {
         List<String> dispositivos = getDispositivosEmparejados();
 
-        // Si no hay dispositivos, mensaje genérico
+        // Si no hay dispositivos
         if (dispositivos.isEmpty()) {
             return "⚠️ DISPOSITIVO HOSTIL DETECTADO\n\n" +
                     "Dispositivo desconocido identificado en tu red personal. " +
                     "Protocolo de contención iniciado.";
         }
 
-        // Elegir uno aleatorio
+        // Elegir uno aleatorio entre los detectados
         String dispositivo = dispositivos.get((int)(Math.random() * dispositivos.size()));
 
         return "⚠️ DISPOSITIVO HOSTIL DETECTADO\n\n" +
@@ -46,7 +46,6 @@ public class BluetoothScanner {
 
 
     // Obtiene la lista de nombres de dispositivos Bluetooth emparejados
-
     private List<String> getDispositivosEmparejados() {
         List<String> nombres = new ArrayList<>();
         if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)) {
@@ -69,7 +68,7 @@ public class BluetoothScanner {
                     }
                 }
             } catch (Exception e) {
-                // Si hay algún error, simplemente devolvemos lista vacía
+                // Si hay algún error, devolvemos lista vacía
             }
         }
         return nombres;

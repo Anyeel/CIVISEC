@@ -52,21 +52,21 @@ public class SplashActivity extends AppCompatActivity {
         botonUsuario.setOnClickListener(v -> {
             controller.setModoDesarrollo(false);
             actualizarBotones();
-            Toast.makeText(this, "Modo NORMAL: 1 min/evento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Modo NORMAL", Toast.LENGTH_SHORT).show();
         });
 
         // Modo Desarrollo (3 segundos por evento)
         botonDev.setOnClickListener(v -> {
             controller.setModoDesarrollo(true);
             actualizarBotones();
-            Toast.makeText(this, "Modo DEV: 3 seg/evento", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Modo DEV", Toast.LENGTH_SHORT).show();
         });
 
         // Reset completo
         botonReset.setOnClickListener(v -> {
             controller.reiniciarApp();
             new AlertManager().reiniciar(this);
-            Toast.makeText(this, "RESET COMPLETO. Reinicia la app.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "RESET COMPLETO.", Toast.LENGTH_LONG).show();
             finish();
         });
 

@@ -35,6 +35,7 @@ public class MapActivity extends AppCompatActivity {
 
         // Configurar mapa
         mapa = findViewById(R.id.map_view);
+        mapa.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK);
         mapa.setBuiltInZoomControls(true);
         mapa.setMultiTouchControls(true);
 

@@ -10,14 +10,15 @@ import com.example.civisec.R;
 
 public class AlertManager extends BroadcastReceiver {
 
-    // Tiempos: 3 segundos para desarrollo, 1 minuto para producción
-    private static final long TIEMPO_DEV = 3000;
+    // Tiempos: 10 segundos para desarrollo, 1 minuto para producción
+    private static final long TIEMPO_DEV = 10000;
     private static final long TIEMPO_PROD = 60000;
 
-    // ============ RECEPTOR DE EVENTOS ============
+    // RECEPTOR DE EVENTOS
 
 
     // Recibe las alarmas programadas y las ejecuta
+    // Funciona incluso con el telefono apagado
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent == null) return;
@@ -40,23 +41,24 @@ public class AlertManager extends BroadcastReceiver {
             // Alerta especial de dispositivo Bluetooth
             BluetoothScanner scanner = new BluetoothScanner(context);
             String mensaje = scanner.getMensajeAlerta();
-            controller.enviarNotificacion("⚠️ AMENAZA DETECTADA", mensaje);
+            controller.enviarNotificacion("AMENAZA DETECTADA", mensaje);
         }
     }
 
-    // ============ PROGRAMACIÓN DE EVENTOS ============
+    // PROGRAMACIÓN DE EVENTOS
 
      // Programa toda la historia de eventos desde el inicio
     public void programarHistoria(Context context) {
         // Verificar si ya está programada
         var prefs = context.getSharedPreferences("CIVISEC_PREFS", Context.MODE_PRIVATE);
+        //no usamos un booleano normal porque la app se cierra y se perderia el valor
         if (prefs.getBoolean("PROGRAMADA", false)) return;
 
         Controller controller = new Controller(context);
         long tiempo = controller.isModoDesarrollo() ? TIEMPO_DEV : TIEMPO_PROD;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        // === FASE 1: Primeros indicios (0-15 unidades) ===
+        // FASE 1
         programarNoticia(context, alarmManager, 1 * tiempo, 101,
                 R.string.phase1_alert6_title, R.string.phase1_alert6_text);
         programarNoticia(context, alarmManager, 3 * tiempo, 102,
@@ -75,7 +77,7 @@ public class AlertManager extends BroadcastReceiver {
         // Avanzar a fase 2
         programarFase(context, alarmManager, 15 * tiempo, 2);
 
-        // === FASE 2: Escalada (15-30 unidades) ===
+        //FASE 2
         programarNoticia(context, alarmManager, 16 * tiempo, 201,
                 R.string.phase2_alert1_title, R.string.phase2_alert1_text);
         programarNoticia(context, alarmManager, 18 * tiempo, 202,
@@ -96,7 +98,7 @@ public class AlertManager extends BroadcastReceiver {
         // Avanzar a fase 3
         programarFase(context, alarmManager, 30 * tiempo, 3);
 
-        // === FASE 3: Takeover (30-40 unidades) ===
+        //FASE 3
         programarNoticia(context, alarmManager, 32 * tiempo, 301,
                 R.string.phase3_alert1_title, R.string.phase3_alert1_text);
         programarBluetooth(context, alarmManager, 34 * tiempo, 305);
@@ -111,11 +113,10 @@ public class AlertManager extends BroadcastReceiver {
         prefs.edit().putBoolean("PROGRAMADA", true).apply();
     }
 
-    // ============ MÉTODOS AUXILIARES ============
-
     // Programa una noticia para que aparezca en el futuro
     private void programarNoticia(Context context, AlarmManager alarmManager,
                                   long retardo, int codigo, int tituloId, int textoId) {
+        // Creamos un Intent con la información de la noticia futura.
         Intent intent = new Intent(context, AlertManager.class);
         intent.setAction("NOTICIA");
         intent.putExtra("TITULO", tituloId);
@@ -132,6 +133,7 @@ public class AlertManager extends BroadcastReceiver {
     // Programa un cambio de fase
     private void programarFase(Context context, AlarmManager alarmManager,
                                long retardo, int fase) {
+        // Creamos un Intent con la información de la fase.
         Intent intent = new Intent(context, AlertManager.class);
         intent.setAction("FASE");
         intent.putExtra("FASE", fase);
@@ -159,6 +161,7 @@ public class AlertManager extends BroadcastReceiver {
     }
 
     // Reinicia la programación (para volver a empezar)
+    // Coge las preferencias y pone nuestro Bool a false
     public void reiniciar(Context context) {
         var prefs = context.getSharedPreferences("CIVISEC_PREFS", Context.MODE_PRIVATE);
         prefs.edit().putBoolean("PROGRAMADA", false).apply();

@@ -38,29 +38,28 @@ public class Controller {
         crearCanalNotificaciones();
     }
 
-    // ============ NAVEGACIÓN ============
+    //NAVEGACIÓN
 
 
     // Configura la barra de navegación inferior
-
     public void setupBottomNavigation(Activity activity, int currentItemId) {
         BottomNavigationView bottomNav = activity.findViewById(R.id.bottom_navigation);
-        if (bottomNav == null) return; // Comprobación de seguridad
+        if (bottomNav == null) return; // Comprobación de seguridad para nulos
 
-        // 1. Marca el ítem del menú actual como seleccionado
+        //Marca el ítem del menú actual como seleccionado
         bottomNav.setSelectedItemId(currentItemId);
 
-        // 2. Configura el listener para reaccionar a los clics
+        //Configura el listener para reaccionar a los clics
         bottomNav.setOnItemSelectedListener(item -> {
-            // 3. Si el usuario vuelve a pulsar el ítem en el que ya está, no hacemos nada
+            //Si el usuario vuelve a pulsar el ítem en el que ya está, no hacemos nada
             if (item.getItemId() == currentItemId) {
                 return false;
             }
 
-            // 4. Obtiene el Intent correcto para el ítem pulsado
+            //Obtiene el Intent correcto para el ítem pulsado
             Intent intent = getIntentForMenuItem(activity, item.getItemId());
 
-            // 5. Si el Intent es válido, inicia la nueva actividad y cierra la actual
+            //Si el Intent es válido, inicia la nueva actividad y cierra la actual
             if (intent != null) {
                 // Estas flags ayudan a gestionar el historial para no apilar actividades
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -75,15 +74,11 @@ public class Controller {
         });
     }
 
-    /**
-     * Método de ayuda que devuelve el Intent correcto para un ID de menú específico.
-     * @param context El contexto actual.
-     * @param itemId El ID del ítem del menú que se ha pulsado.
-     * @return un Intent para la actividad correspondiente, o null si no se reconoce el ID.
-     */
+    // Devuelve el Intent correcto para un ID de menú específico.
+
     private Intent getIntentForMenuItem(Context context, int itemId) {
-        if (itemId == R.id.nav_alerts) {
-            return new Intent(context, MainActivity.class);
+        if (itemId == R.id.nav_alerts) { // IDs del ítem del menú que se ha pulsado
+            return new Intent(context, MainActivity.class); // Intent para cada actividad correspondiente
         } else if (itemId == R.id.nav_map) {
             return new Intent(context, MapActivity.class);
         } else if (itemId == R.id.nav_tips) {
@@ -94,7 +89,7 @@ public class Controller {
         return null; // Devuelve null si no se encuentra una coincidencia
     }
 
-    // ============ FASES ============
+    // FASES
 
     // Obtiene la fase actual (1, 2 o 3)
     public int getFaseActual() {
@@ -109,7 +104,7 @@ public class Controller {
 
         // Notificar cambio de fase
         if (nuevaFase == 2) {
-            enviarNotificacion("⚠️ ALERTA NIVEL 2",
+            enviarNotificacion("⚠️ AUMENTADO NIVEL DE ALERTA",
                     "Escalada de amenazas detectada. Revise las nuevas directivas.");
         } else if (nuevaFase == 3) {
             enviarNotificacion("🚨 DIRECTIVA OBLIGATORIA",
@@ -117,8 +112,7 @@ public class Controller {
         }
     }
 
-    // ============ NOTICIAS ============
-
+     // NOTICIAS
 
      // Guarda una noticia activada y envía notificación
     public void activarNoticia(int tituloId, int textoId) {
@@ -138,7 +132,7 @@ public class Controller {
         return new HashSet<>(prefs.getStringSet("NOTICIAS", new HashSet<>()));
     }
 
-    // ============ NOTIFICACIONES ============
+    // NOTIFICACIONES
 
     // Crea el canal de notificaciones (necesario en Android 8+)
     private void crearCanalNotificaciones() {
@@ -175,7 +169,7 @@ public class Controller {
         }
     }
 
-    // ============ REFUGIOS (MAPA) ============
+    // REFUGIOS (MAPA)
 
     // Guarda las ubicaciones de los refugios
     public void guardarRefugios(Set<String> ubicaciones) {
@@ -187,7 +181,7 @@ public class Controller {
         return prefs.getStringSet("REFUGIOS", new HashSet<>());
     }
 
-    // ============ MODO DESARROLLADOR ============
+    // MODO DESARROLLADOR
 
     // Activa/desactiva el modo desarrollo (eventos cada 3 seg vs 1 min)
     public void setModoDesarrollo(boolean activar) {
