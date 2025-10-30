@@ -138,4 +138,8 @@
     <!--          TEXTOS PARA LOS MARCADORES DEL MAPA (FASE 3)           -->
     <string name="phase3_marker_title">Centro de Procesamiento #%d</string>
     <string name="phase3_marker_snippet">Directiva: Asistencia obligatoria para recalibración orgánica.</string>
+
+    <!--          TEXTOS PARA LA NOTIFICACIÓN DE BIENVENIDA              -->
+    <string name="welcome_notification_title">Bienvenido a CIVISEC</string>
+    <string name="welcome_notification_text">Este es su centro de alertas. Recibirá notificaciones críticas del sistema a través de este canal. Manténgase a la espera.</string>
 </resources>

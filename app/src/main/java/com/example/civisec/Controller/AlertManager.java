@@ -58,6 +58,10 @@ public class AlertManager extends BroadcastReceiver {
         long tiempo = controller.isModoDesarrollo() ? TIEMPO_DEV : TIEMPO_PROD;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
+        //NOTIFICACIÓN INICIAL DE BIENVENIDA
+        programarNoticia(context, alarmManager, 1, 100,
+                R.string.welcome_notification_title, R.string.welcome_notification_text);
+
         // FASE 1
         programarNoticia(context, alarmManager, 1 * tiempo, 101,
                 R.string.phase1_alert6_title, R.string.phase1_alert6_text);

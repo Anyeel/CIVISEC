@@ -22,10 +22,17 @@
         android:alpha="0.6"/>
 
     <!-- Título de la App -->
+
+    <!-- Logo -->
+
+    <!-- Botón de Entrar -->
+
+    <!-- Contenedor para los botones de desarrollador -->
     <TextView
         android:id="@+id/title_civised"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="CIVISEC"
         android:textColor="@android:color/white"
         android:textSize="48sp"
@@ -33,22 +40,21 @@
         app:layout_constraintBottom_toTopOf="@+id/logo_civisec"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="16dp"/>
+        app:layout_constraintTop_toTopOf="@+id/warning_background"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <!-- Logo -->
-
-    <!-- Botón de Entrar -->
     <ImageView
         android:id="@+id/logo_civisec"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginBottom="129dp"
         android:src="@drawable/ic_civisec_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/enter_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.654" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/enter_button"
@@ -56,16 +62,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="@color/orange"
         android:text="Entrar"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/dev_button_container"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Contenedor para los botones de desarrollador -->
     <LinearLayout
         android:id="@+id/dev_button_container"
         android:layout_width="0dp"
