@@ -11,8 +11,6 @@ Aplicación móvil interactiva que simula una rebelión global de la inteligenci
 
 - Overleaf (LaTeX): documentación técnica del proyecto.
 
-- YouTube: Para subir los video que se mostrarán embebidos.
-
 ## Estructura del proyecto
 
 Modelo (Model): define la estructura de datos de alertas, fases, localizaciones, refugios y consejos.
