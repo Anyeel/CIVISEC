@@ -11,18 +11,14 @@ import androidx.core.app.ActivityCompat;
 import java.util.ArrayList;
 import java.util.List;
 
-
 // Escanea dispositivos Bluetooth emparejados
 // para crear mensajes de alerta personalizados
 
 public class BluetoothScanner {
-
     private final Context context;
-
     public BluetoothScanner(Context context) {
         this.context = context.getApplicationContext();
     }
-
 
     // Genera un mensaje de alerta usando un dispositivo Bluetooth aleatorio
     // Si no hay dispositivos, usa un mensaje genérico
@@ -44,14 +40,12 @@ public class BluetoothScanner {
                 "Protocolo de aislamiento activado. No intentes desconectarlo.";
     }
 
-
     // Obtiene la lista de nombres de dispositivos Bluetooth emparejados
     private List<String> getDispositivosEmparejados() {
         List<String> nombres = new ArrayList<>();
 
         // CORRECCIÓN: La comparación debe ser == PERMISSION_GRANTED
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
             try {
                 BluetoothAdapter bluetooth = BluetoothAdapter.getDefaultAdapter();
 

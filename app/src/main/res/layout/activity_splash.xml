@@ -45,8 +45,8 @@
 
     <ImageView
         android:id="@+id/logo_civisec"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="194dp"
+        android:layout_height="194dp"
         android:layout_marginBottom="129dp"
         android:src="@drawable/ic_civisec_logo"
         app:layout_constraintBottom_toTopOf="@+id/enter_button"
