@@ -1,4 +1,4 @@
-# CIVSEC
+# CIVSEC (PARODIA)
 Aplicación móvil interactiva que simula una rebelión global de la inteligencia artificial, presentada como una app del gobierno. Realizada como proyecto de clase con temática de Halloween. La aplicación está desarrollada en Android Studio utilizando Java, siguiendo el patrón arquitectónico MVC (Modelo–Vista–Controlador) para mantener una estructura clara, escalable y fácil de mantener.
 
 ## Tecnologías utilizadas
