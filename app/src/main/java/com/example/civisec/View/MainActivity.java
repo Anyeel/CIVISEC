@@ -54,21 +54,21 @@ public class MainActivity extends AppCompatActivity {
     private void actualizarPantalla() {
         limpiarTarjetas();
 
-        // Siempre mostrar noticias activadas
-        mostrarNoticias();
-
-        // En fase 3, añadir tarjeta especial de Bluetooth
+        // En fase 3, añadir tarjeta especial de Bluetooth PRIMERO
         if (controller.getFaseActual() >= 3) {
             mostrarAlertaBluetooth();
         }
+
+        // Después mostrar noticias activadas
+        mostrarNoticias();
     }
 
     // Muestra todas las noticias activadas
     private void mostrarNoticias() {
         List<Noticia> noticias = parsearNoticias();
 
-        // Ordenar de más reciente a más antigua
-        noticias.sort((a, b) -> Integer.compare(b.tituloId, a.tituloId));
+        // Ordenar de más reciente a más antigua (orden DESCENDENTE por codigo)
+        noticias.sort((a, b) -> Integer.compare(b.codigo, a.codigo));
 
         // Crear tarjeta para cada noticia
         for (Noticia noticia : noticias) {
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         tarjeta.addView(texto);
 
-        // Añadir al principio (después de los títulos)
+        // Añadir al principio (después de los títulos - índice 2)
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         params.setMargins(0, 0, 0, dpAPx(16));
         tarjeta.setLayoutParams(params);
 
-        contenedor.addView(tarjeta, 2);
+        contenedor.addView(tarjeta, 2); // Posición 2: después del título y subtítulo
     }
 
 
@@ -157,10 +157,17 @@ public class MainActivity extends AppCompatActivity {
         List<Noticia> lista = new ArrayList<>();
         for (String noticiaStr : controller.getNoticias()) {
             String[] partes = noticiaStr.split("\\|");
-            if (partes.length == 2) {
+            // Compatibilidad con formato antiguo (2 valores) y nuevo (3 valores)
+            if (partes.length == 3) {
+                int codigo = Integer.parseInt(partes[0]);
+                int titulo = Integer.parseInt(partes[1]);
+                int texto = Integer.parseInt(partes[2]);
+                lista.add(new Noticia(codigo, titulo, texto));
+            } else if (partes.length == 2) {
+                // Formato antiguo: asignar codigo = tituloId
                 int titulo = Integer.parseInt(partes[0]);
                 int texto = Integer.parseInt(partes[1]);
-                lista.add(new Noticia(titulo, texto));
+                lista.add(new Noticia(titulo, titulo, texto));
             }
         }
         return lista;
@@ -183,8 +190,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Clase auxiliar para almacenar noticias
     private static class Noticia {
-        int tituloId, textoId;
-        Noticia(int titulo, int texto) {
+        int codigo, tituloId, textoId;
+        Noticia(int codigo, int titulo, int texto) {
+            this.codigo = codigo;
             this.tituloId = titulo;
             this.textoId = texto;
         }

@@ -30,7 +30,8 @@ public class AlertManager extends BroadcastReceiver {
             // Activar una noticia
             int titulo = intent.getIntExtra("TITULO", 0);
             int texto = intent.getIntExtra("TEXTO", 0);
-            controller.activarNoticia(titulo, texto);
+            int codigo = intent.getIntExtra("CODIGO", 0);
+            controller.activarNoticia(titulo, texto, codigo);
 
         } else if ("FASE".equals(accion)) {
             // Avanzar de fase
@@ -47,7 +48,7 @@ public class AlertManager extends BroadcastReceiver {
 
     // PROGRAMACIÓN DE EVENTOS
 
-     // Programa toda la historia de eventos desde el inicio
+    // Programa toda la historia de eventos desde el inicio
     public void programarHistoria(Context context) {
         // Verificar si ya está programada
         var prefs = context.getSharedPreferences("CIVISEC_PREFS", Context.MODE_PRIVATE);
@@ -125,6 +126,7 @@ public class AlertManager extends BroadcastReceiver {
         intent.setAction("NOTICIA");
         intent.putExtra("TITULO", tituloId);
         intent.putExtra("TEXTO", textoId);
+        intent.putExtra("CODIGO", codigo); // Añadimos el código para ordenar
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context, codigo, intent, PendingIntent.FLAG_IMMUTABLE

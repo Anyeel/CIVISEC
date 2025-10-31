@@ -112,13 +112,13 @@ public class Controller {
         }
     }
 
-     // NOTICIAS
+    // NOTICIAS
 
-     // Guarda una noticia activada y envía notificación
-    public void activarNoticia(int tituloId, int textoId) {
-        // Guardar en preferencias
+    // Guarda una noticia activada y envía notificación
+    public void activarNoticia(int tituloId, int textoId, int codigo) {
+        // Guardar en preferencias con el formato: codigo|tituloId|textoId
         Set<String> noticias = getNoticias();
-        noticias.add(tituloId + "|" + textoId);
+        noticias.add(codigo + "|" + tituloId + "|" + textoId);
         prefs.edit().putStringSet("NOTICIAS", noticias).apply();
 
         // Enviar notificación
